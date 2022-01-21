@@ -1,0 +1,55 @@
+from django.urls import path
+from django.contrib.auth.decorators import login_required
+from .views import *
+urlpatterns = [
+    
+    path("login_view",login_view.as_view(),name="login_view"),
+    path("view_users",view_users.as_view(),name="view_users"),
+    path('blockuser',BlockUserAPIView.as_view(),name='blockuser'),
+    path('unblockuser',UnblockUserAPIView.as_view(),name='unblockuser'),
+    path('deleteuser',DeleteUserAPIView.as_view(),name='deleteuser'),
+    path('userprofile',UserProfileDetailsAPIView.as_view(),name='userprofile'),
+    path('user',cms.as_view(),name='user'),
+    path('logout',Logout.as_view(),name='logout'),  
+    path('filter',datefilter.as_view(),name='filter'),
+    path('changepass',ChangePasswordView.as_view(),name='changepass'),
+    path('send_otp_foget',send_otp_foget.as_view(),name='send_otp_foget'),
+    path('verify_forget_otp',verify_forget_otp.as_view(),name='verify_forget_otp'),
+    path('forget_admin',forget_password_admin.as_view(),name='forget_admin'),
+    path('CreateSubAdmin',CreateSubAdminApiView.as_view(),name='CreateSubAdmin'),
+    path('subadmin_permission',subadmin_permission.as_view(),name='subadmin_permission'),
+    path('UpdateSubAdminPermission',UpdateSubAdminPermission.as_view(),name='UpdateSubAdminPermission'),
+    path('view_country',view_country.as_view(),name='view_country'),
+    path('view_state',view_state.as_view(),name='view_state'),
+    path('view_city',view_city.as_view(),name='view_city'),
+    path('setupallcity',setupallcity.as_view(),name='setupallcity'),
+    #path('EditSubAdminAPIView',EditSubAdminAPIView.as_view(),name='EditSubAdminAPIView'),
+    path('finduser',finduser.as_view(),name='finduser'),
+    #path('apply_permission',view_notification.as_view(),name='apply_permission'),
+    path('CreateRegionApiView',CreateRegionApiView.as_view(),name='CreateRegionApiView'),
+    path('deleteregion',DeleteRegionAPIView.as_view(),name='deleteregion'),
+    path('UpdateRegion',UpdateRegionApiView.as_view(),name='UpdateRegion'),
+    path('UnblockRegion',UnblockRegionAPIView.as_view(),name='UnblockRegion'),
+    path('blockRegion',BlockRegionAPIView.as_view(),name='blockRegion'),
+    path('state',view_stateby_country.as_view(),name='state'),
+    path('city',view_cityby_state.as_view(),name='city'),
+    #path('search_api',get_api_data.as_view(),name='search_api'),
+    path('view_news',View_News.as_view(),name='view_news'),
+    path('deletenews',DeleteNewsAPIView.as_view(),name='deletenews'),
+    path('blocknews',BlockNewsAPIView.as_view(),name='blocknews'),
+    path('unblocknews',UnblockNewsAPIView.as_view(),name='unblocknews'),
+    #path('updatenews',UpdateNewsRequestApiView.as_view(),name="updatenews"),
+    path('viewnewsrequest',ViewNewsRequest.as_view(),name='viewnewsrequest'),
+   # path('viewnewsrequestdetail',ViewNewsRequestDetailsAPIView.as_view(),name='viewnewsrequestdetail'),
+    path('NewsAprroveAPIView',NewsAprroveAPIView.as_view(),name="NewsAprroveAPIView"),
+    path('NewsRejectAPIView',NewsRejectAPIView.as_view(),name='NewsRejectAPIView'),
+
+
+
+    
+  
+
+
+
+     
+]
