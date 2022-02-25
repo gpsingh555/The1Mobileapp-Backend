@@ -112,9 +112,15 @@ venv.bak/
 dmypy.json
 
 # Pyre type checker
+
+.idea/
 .pyre/
-account/migrations
-account/migrations/
+account/migrations/*
+account/migrations/*
+account/__pycache__
+admin_panel/migrations/*
+admin_panel/__pycache__
 the1backend.sock
 static
 staticfiles
+media
