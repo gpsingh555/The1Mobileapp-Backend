@@ -4,7 +4,7 @@ from .models import *
 
 def upload_news():
     for keyword in list(news_keyword.objects.all().values_list("keyword",flat=True)):
-        newsapi = NewsApiClient(api_key='3b80f2716a74411eaeab937b44871ceb')
+        newsapi = NewsApiClient(api_key='3b80f2716a74411eaeab937b44871cebn')
         all_articles = newsapi.get_everything(q=keyword,
                                               from_param=str(date.today() - timedelta(1)),
                                               to=str(date.today() - timedelta(1)),
