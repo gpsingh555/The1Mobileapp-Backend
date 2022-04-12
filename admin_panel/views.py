@@ -103,6 +103,7 @@ class cms(APIView):
         totalactiveuser=User.objects.filter(is_active=True).count()
         totalandroiduser = Userprofile.objects.filter(device_type=1).count()
         totaliphoneuser =Userprofile.objects.filter(device_type=2).count()
+        
         data={
             'totaluser':totaluser,
             'totalactiveuser':totalactiveuser,

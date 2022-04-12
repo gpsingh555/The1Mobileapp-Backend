@@ -23,7 +23,7 @@ def upload_news():
         #                                           language='en',
         #                                           sort_by='relevancy',
         #                                           page=page)
-        for x in all_articles['articles']:
+        for x in all_articles['articles']: 
             print(x['title'])
             print(x['author'])
             print(x['title'])

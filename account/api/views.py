@@ -1,3 +1,4 @@
+from curses.ascii import US
 import json
 import random
 import re
@@ -387,14 +388,13 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class Contect(APIView):
-	def post(self,request):
-		#code=request.data.get('code')
-		mobile_number=request.data.get('mobile_number')
-		if check_blank_or_null([mobile_number]) and User.objects.filter(username=mobile_number).exists():
-			user=User.objects.get(username=mobile_number)
-			profileO=Userprofile.objects.get(user=user)
-			data={
-				'key found':user.id,
+    def post(self,request):
+        mobile_number=request.data.get('mobile_number')
+        if check_blank_or_null([mobile_number]) and User.objects.filter(username=mobile_number).exists():
+            user=User.objects.get(username=mobile_number)
+            profileO=Userprofile.objects.get(user=user)
+            data={
+                'key found':user.id,
 				'first_name':user.first_name,
 				'last_name':user.last_name,
 				'mobile_number':user.username,
@@ -406,13 +406,33 @@ class Contect(APIView):
 				'city':profileO.city,
 				'is_active':user.is_active,
 				'date_joined':user.date_joined,
-				#'image':profileO.image,
+            }
+      
+        client = CommunicationIdentityClient.from_connection_string(connection_string)
+	
+	# Create an identity
+        identity = client.create_user()
+        print("\nCreated an identity with ID: " + identity.properties['id'])
 
-			}
-			return Response({'message':'suceess','data':data},status=HTTP_200_OK)
-		else:
-			return Response({'message':'success'},status=HTTP_200_OK)
+	#Store the identity to issue access tokens later
+        existingIdentity = identity	
 
+	# Issue an access token with the "voip" scope for an identity
+        token_result = client.get_token(identity, ["voip"])
+        expires_on = token_result.expires_on.strftime("%d/%m/%y %I:%M %S %p")
+        print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
+        print(token_result.token)
+	
+	# Create an identity and issue an access token within the same request
+        identity_token_result = client.create_user_and_token(["voip"])
+        identity = identity_token_result[0].properties['id']
+        token = identity_token_result[1].token
+        expires_on = identity_token_result[1].expires_on.strftime("%d/%m/%y %I:%M %S %p")
+        #print("\nCreated an identity with ID: " + identity)
+        #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
+        #print(token)
+
+        return Response({'message':'Token Get Success','data':data,'Token':token,'Identity':identity,'expires_on':expires_on})
 
 
 
@@ -796,5 +816,7 @@ class GetTokenAzure(APIView):
         #print("\nCreated an identity with ID: " + identity)
         #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
         #print(token)
+
         return Response({'message':'Token Get Success','Token':token,'Identity':identity,'expires_on':expires_on})
 
+   
