@@ -167,30 +167,30 @@ class login(APIView):
         device_type=request.data.get('device_type')
         device_token=request.data.get('device_token')
         code =request.data.get('code')
-        client = CommunicationIdentityClient.from_connection_string(connection_string)
+    #     client = CommunicationIdentityClient.from_connection_string(connection_string)
 	
-	# Create an identity
-        identity = client.create_user()
-        print("\nCreated an identity with ID: " + identity.properties['id'])
+	# # Create an identity
+    #     identity = client.create_user()
+    #     print("\nCreated an identity with ID: " + identity.properties['id'])
 
-	#Store the identity to issue access tokens later
-        existingIdentity = identity	
+	# #Store the identity to issue access tokens later
+    #     existingIdentity = identity	
 
-	# Issue an access token with the "voip" scope for an identity
-        token_result = client.get_token(identity, ["voip"])
-        expires_on = token_result.expires_on.strftime("%d/%m/%y %I:%M %S %p")
-        print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
-        print(token_result.token)
+	# # Issue an access token with the "voip" scope for an identity
+    #     token_result = client.get_token(identity, ["voip"])
+    #     expires_on = token_result.expires_on.strftime("%d/%m/%y %I:%M %S %p")
+    #     print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
+    #     print(token_result.token)
 	
-	# Create an identity and issue an access token within the same request
-        identity_token_result = client.create_user_and_token(["voip"])
-        identity = identity_token_result[0].properties['id']
-        token_key = identity_token_result[1].token
-        expires_on = identity_token_result[1].expires_on.strftime("%d/%m/%y %I:%M %S %p")
-        #print("\nCreated an identity with ID: " + identity)
-        #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
-        #print(token)
-        #return Response({'message':'Token Get Success','Token':token,'Identity':identity,'expires_on':expires_on})
+	# # Create an identity and issue an access token within the same request
+    #     identity_token_result = client.create_user_and_token(["voip"])
+    #     identity = identity_token_result[0].properties['id']
+    #     token_key = identity_token_result[1].token
+    #     expires_on = identity_token_result[1].expires_on.strftime("%d/%m/%y %I:%M %S %p")
+    #     #print("\nCreated an identity with ID: " + identity)
+    #     #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
+    #     #print(token)
+    #     #return Response({'message':'Token Get Success','Token':token,'Identity':identity,'expires_on':expires_on})
 
         
         if mobile_number is None or password is None:
@@ -262,7 +262,7 @@ class login(APIView):
                 #'mobile_number':User.username,
                 
             }
-            returnToken = {'token':token.key,"message":"success",'data':data,'AzureToken':token_key,'Identity':identity}
+            returnToken = {'token':token.key,"message":"success",'data':data}
             return HttpResponse(
                 json.dumps(returnToken),
                 content_type = 'application/javascript; charset=utf8',
@@ -408,31 +408,31 @@ class Contect(APIView):
 				'date_joined':user.date_joined,
             }
       
-        client = CommunicationIdentityClient.from_connection_string(connection_string)
+    #     client = CommunicationIdentityClient.from_connection_string(connection_string)
 	
-	# Create an identity
-        identity = client.create_user()
-        print("\nCreated an identity with ID: " + identity.properties['id'])
+	# # Create an identity
+    #     identity = client.create_user()
+    #     print("\nCreated an identity with ID: " + identity.properties['id'])
 
-	#Store the identity to issue access tokens later
-        existingIdentity = identity	
+	# #Store the identity to issue access tokens later
+    #     existingIdentity = identity	
 
-	# Issue an access token with the "voip" scope for an identity
-        token_result = client.get_token(identity, ["voip"])
-        expires_on = token_result.expires_on.strftime("%d/%m/%y %I:%M %S %p")
-        print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
-        print(token_result.token)
+	# # Issue an access token with the "voip" scope for an identity
+    #     token_result = client.get_token(identity, ["voip"])
+    #     expires_on = token_result.expires_on.strftime("%d/%m/%y %I:%M %S %p")
+    #     print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
+    #     print(token_result.token)
 	
-	# Create an identity and issue an access token within the same request
-        identity_token_result = client.create_user_and_token(["voip"])
-        identity = identity_token_result[0].properties['id']
-        token = identity_token_result[1].token
-        expires_on = identity_token_result[1].expires_on.strftime("%d/%m/%y %I:%M %S %p")
-        #print("\nCreated an identity with ID: " + identity)
-        #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
-        #print(token)
+	# # Create an identity and issue an access token within the same request
+    #     identity_token_result = client.create_user_and_token(["voip"])
+    #     identity = identity_token_result[0].properties['id']
+    #     token = identity_token_result[1].token
+    #     expires_on = identity_token_result[1].expires_on.strftime("%d/%m/%y %I:%M %S %p")
+    #     #print("\nCreated an identity with ID: " + identity)
+    #     #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
+    #     #print(token)
 
-        return Response({'message':'Token Get Success','data':data,'Token':token,'Identity':identity,'expires_on':expires_on})
+        return Response({'message':'Token Get Success','data':data})
 
 
 
