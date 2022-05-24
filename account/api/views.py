@@ -172,7 +172,7 @@ class login(APIView):
     
         
         if mobile_number is None or password is None:
-            return Response({'message': 'Please provide both mobile and password'},
+            return Response({'message': 'Please provide both mobile and password '},
                             status=HTTP_400_BAD_REQUEST)
         user = authenticate(username=mobile_number, password=password)
         if not user:
