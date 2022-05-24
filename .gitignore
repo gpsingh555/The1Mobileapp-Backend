@@ -115,8 +115,6 @@ dmypy.json
 
 .idea/
 .pyre/
-account/migrations/*
-account/migrations/*
 account/__pycache__
 admin_panel/migrations/*
 admin_panel/__pycache__
