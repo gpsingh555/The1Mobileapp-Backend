@@ -31,6 +31,7 @@ class Userprofile(models.Model):
     user_bio=models.CharField(default="",blank=True,null=True,max_length=500)
     is_subadmin=models.BooleanField(default=False)
     location = models.PointField(null=True)
+    quickblox_id=models.CharField(max_length=20,default="",blank=True,null=True)
     
 
     def __str__(self):
