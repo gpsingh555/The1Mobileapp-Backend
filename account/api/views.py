@@ -784,8 +784,7 @@ class DeleteAccount(APIView):
 class GroupMemberView(APIView):
     def get(self,request,*args,**kwargs):
         try:
-            dr=ChatGroupMember.objects.get(member=request.user,chat_group=self.kwargs.get('pk'),is_accept=True)
-            print(dr)
+            ChatGroupMember.objects.get(member=request.user,chat_group=self.kwargs.get('pk'),is_accept=True)
         except:
             return Response('Invalid Group')
         try:

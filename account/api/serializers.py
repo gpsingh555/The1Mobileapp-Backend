@@ -330,7 +330,7 @@ class BitcoinNewsSerializer(ModelSerializer):
 
 class GroupMemberSer(ModelSerializer):
     group_id=SerializerMethodField()
-    username=SerializerMethodField()
+    mobile_number=SerializerMethodField()
     full_name=SerializerMethodField()
     mobile_number=SerializerMethodField()
     def get_group_id(self,obj):
@@ -343,4 +343,4 @@ class GroupMemberSer(ModelSerializer):
     
     class Meta:
         model=ChatGroupMember
-        fields=('group_id','full_name',"mobile_number")
+        fields=('group_id',"mobile_number",'full_name')
