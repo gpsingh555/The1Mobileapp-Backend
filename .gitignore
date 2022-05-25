@@ -116,6 +116,7 @@ dmypy.json
 .idea/
 .pyre/
 account/__pycache__
+account/migrations/*
 admin_panel/migrations/*
 admin_panel/__pycache__
 the1backend.sock
