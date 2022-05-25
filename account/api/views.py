@@ -781,6 +781,48 @@ class DeleteAccount(APIView):
              return Response({"result":"Otp Is incorrect"})
 
 
+class GroupMemberView(APIView):
+    def get(self,request,*args,**kwargs):
+        try:
+            dr=ChatGroupMember.objects.get(member=request.user,chat_group=self.kwargs.get('pk'),is_accept=True)
+            print(dr)
+        except:
+            return Response('Invalid Group')
+        try:
+            stu=ChatGroupMember.objects.filter(chat_group_id=self.kwargs.get('pk'))
+            serializer=GroupMemberSer(stu,many=True)
+            return Response({'Group member':serializer.data})
+        except:
+            return Response({'error':'something wrong'})
+
+
+class CreateGroupAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post (self,request):
+        group_id=request.data.get('group_id')
+        name=request.data.get('name')
+        try:
+            add=ChatGroupAdmin.objects.create(admin_name=request.user,group_id=group_id,name=name)
+            add.save()
+            return Response({'data':'Group Create successfully'})
+        except:
+            return Response('fill group id ')
+
+class AddGroupMemberAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self,request):
+        group_id=request.data.get('group_id')
+        qss=ChatGroupAdmin.objects.get(group_id=group_id)
+        print(qss,'hjfhsdjd')
+        g = ChatGroupMember.objects.create(chat_group=qss,member=request.user,is_accept=True)
+        # users = User.objects.all()
+        # for u in users:
+        #     g.user_set.add(u)
+        g.save()
+        return Response({'message':'User Added Successfully'})
+       
+
+
 class GetTokenAzure(APIView):
     def get(self,request):
         client = CommunicationIdentityClient.from_connection_string(connection_string)

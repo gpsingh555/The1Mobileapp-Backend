@@ -67,3 +67,7 @@ class LikeNewsAdmin(admin.ModelAdmin):
 class LikeNewsAdmin(admin.ModelAdmin):
     list_display=['user','news','feedback','comment_date']
 
+
+admin.site.register(ChatGroupAdmin)
+admin.site.register(ChatGroupMember)
+admin.site.register(UserChat)

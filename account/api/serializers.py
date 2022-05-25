@@ -326,3 +326,21 @@ class BitcoinNewsSerializer(ModelSerializer):
             'user_comment_count',
 
         ]
+
+
+class GroupMemberSer(ModelSerializer):
+    group_id=SerializerMethodField()
+    username=SerializerMethodField()
+    full_name=SerializerMethodField()
+    mobile_number=SerializerMethodField()
+    def get_group_id(self,obj):
+        return obj.chat_group.group_id
+    def get_mobile_number(self,obj):
+        return obj.member.username
+    def get_full_name(self,obj):
+        dr=Userprofile.objects.get(user_id=obj.member.id)
+        return dr.user.first_name+" "+ dr.user.last_name
+    
+    class Meta:
+        model=ChatGroupMember
+        fields=('group_id','full_name',"mobile_number")
