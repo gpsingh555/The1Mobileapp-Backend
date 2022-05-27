@@ -327,7 +327,6 @@ class BitcoinNewsSerializer(ModelSerializer):
 
         ]
 
-
 class GroupMemberSer(ModelSerializer):
     group_id=SerializerMethodField()
     mobile_number=SerializerMethodField()
@@ -338,9 +337,70 @@ class GroupMemberSer(ModelSerializer):
     def get_mobile_number(self,obj):
         return obj.member.username
     def get_full_name(self,obj):
-        dr=Userprofile.objects.get(user_id=obj.member.id)
-        return dr.user.first_name+" "+ dr.user.last_name
+        return obj.member.first_name+" "+ obj.member.last_name
     
     class Meta:
         model=ChatGroupMember
         fields=('group_id',"mobile_number",'full_name')
+
+
+
+class GroupCreateSerializer(Serializer):
+    id=CharField(required=False)
+    group_id=CharField(error_messages={'required':'group_id is required', 'blank':'group_id is required'},max_length=400)
+    name = CharField(error_messages={'required':'name is required', 'blank':'name is required'},max_length=400)
+
+    def validate(self, data):
+        group_id = data.get('group_id')
+        name=data.get('name')
+
+        if ChatGroupAdmin.objects.filter(group_id=group_id).exists():
+            raise APIException400({
+                            'success':"False",
+                            'message':'This group_id is already exists',
+                            })
+        if ChatGroupAdmin.objects.filter(name=name).exists():
+            raise APIException400({
+                            'success':"False",
+                            'message':'This group name is already exists',
+                            })
+        if data.get("name") == "":
+            raise ValidationError("group name can not be empty")
+
+        if data.get("group_id") == "":
+            raise ValidationError("group_id can not be empty")
+
+        return data
+
+    def create(self, validated_data):
+        user=self.context['request'].user
+        name=self.validated_data['name']
+        group_id=self.validated_data['group_id']
+        user=ChatGroupAdmin.objects.create(admin_name=user,name=name,group_id=group_id)
+        user.save()
+        return validated_data       
+
+class ShowUserSerializer(ModelSerializer):
+  mobile_number=SerializerMethodField()
+  full_name=SerializerMethodField()
+  email=SerializerMethodField()
+  user_id=SerializerMethodField()
+
+  user_id=SerializerMethodField()
+  def get_user_id(self,instance):
+    return instance.user.id
+  def get_mobile_number(self,instance):
+    return instance.user.username
+  def get_full_name(self,instance):
+    return instance.user.first_name+" "+instance.user.last_name
+  def get_email(self,instance):
+    return instance.user.email      
+  
+  class Meta:
+    model = Userprofile
+    fields = [
+          'user_id',
+          "mobile_number",
+          "full_name",
+          "email",
+          ]

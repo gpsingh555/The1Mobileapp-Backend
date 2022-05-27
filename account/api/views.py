@@ -782,13 +782,16 @@ class DeleteAccount(APIView):
 
 
 class GroupMemberView(APIView):
-    def get(self,request,*args,**kwargs):
+    #permission_classes = (IsAuthenticated,)
+    def post(self,request,*args,**kwargs):
+        group_id=request.data.get('group_id')
         try:
-            ChatGroupMember.objects.get(member=request.user,chat_group=self.kwargs.get('pk'),is_accept=True)
+            qss=ChatGroupAdmin.objects.get(group_id=group_id)#ChatGroupMember.objects.get(member=request.user,chat_group=group_id,is_accept=True)
+            
         except:
             return Response('Invalid Group')
         try:
-            stu=ChatGroupMember.objects.filter(chat_group_id=self.kwargs.get('pk'))
+            stu=ChatGroupMember.objects.filter(chat_group_id=qss)
             serializer=GroupMemberSer(stu,many=True)
             return Response({'Group member':serializer.data})
         except:
@@ -798,29 +801,29 @@ class GroupMemberView(APIView):
 class CreateGroupAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     def post (self,request):
-        group_id=request.data.get('group_id')
-        name=request.data.get('name')
-        try:
-            add=ChatGroupAdmin.objects.create(admin_name=request.user,group_id=group_id,name=name)
-            add.save()
-            return Response({'data':'Group Create successfully'})
-        except:
-            return Response('fill group id ')
+        serializer=GroupCreateSerializer(data=request.data,context={'request':request})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({'message':'Group has been successfully Created'},status=HTTP_200_OK)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+
+class ShowAllUser(APIView):
+    def get(self,request):
+        addr=Userprofile.objects.filter(is_subadmin=False).order_by("-id")
+        serializer=ShowUserSerializer(addr,many=True)
+        return Response({'data':serializer.data},status=HTTP_200_OK)
+            
 class AddGroupMemberAPI(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self,request):
         group_id=request.data.get('group_id')
+        user_id=request.data.get('user_id')
         qss=ChatGroupAdmin.objects.get(group_id=group_id)
-        print(qss,'hjfhsdjd')
-        g = ChatGroupMember.objects.create(chat_group=qss,member=request.user,is_accept=True)
-        # users = User.objects.all()
-        # for u in users:
-        #     g.user_set.add(u)
-        g.save()
-        return Response({'message':'User Added Successfully'})
+        user=User.objects.get(pk=user_id)
+        ChatGroupMember.objects.get_or_create(chat_group=qss,member=user,is_accept=True)
        
-
+        return Response({'message':'User Added Successfully'})
 
 class GetTokenAzure(APIView):
     def get(self,request):

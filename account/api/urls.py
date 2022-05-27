@@ -29,13 +29,12 @@ urlpatterns = [
     path('delete_otp',deleteaccount_otp.as_view()),
     path('GetTokenAzure',GetTokenAzure.as_view()),
     
-    path('groupmemberview/<int:pk>',GroupMemberView.as_view()),
+    path('groupmemberview',GroupMemberView.as_view()),
     path('CreateGroupAPIView',CreateGroupAPIView.as_view()),
     path('AddGroupMemberAPI',AddGroupMemberAPI.as_view()),
+    path('ShowAllUser',ShowAllUser.as_view()),
     
     
-  
-    #path('reset_password',reset_password.as_view()),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
