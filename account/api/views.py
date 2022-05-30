@@ -34,6 +34,8 @@ from azure.communication.identity import CommunicationIdentityClient, Communicat
 
 connection_string = os.environ["connection_string"]
 
+import logging
+logger = logging.getLogger('accounts')
 
 
 def check_length(data):
@@ -163,14 +165,15 @@ class resend_otp(APIView):
 
 class login(APIView):
     def post(self,request):
+        logger.debug("login api called")
         password = request.data.get("password")
         mobile_number= request.data.get("mobile_number")
         device_type=request.data.get('device_type')
         device_token=request.data.get('device_token')
         code =request.data.get('code')
         quickblox_id=request.data.get('quickblox_id')
+        logger.debug(self.request.data)
     
-        
         if mobile_number is None or password is None:
             return Response({'message': 'Please provide both mobile and password '},
                             status=HTTP_400_BAD_REQUEST)
@@ -243,7 +246,9 @@ class login(APIView):
                     'quickblox_id':profileO.quickblox_id,
                     #'mobile_number':User.username,
                     
-                }               
+                }
+                logger.debug('Responce data for Login User ')
+                logger.debug(data)         
                 returnToken = {'token':token.key,"message":"success",'data':data}
                 return HttpResponse(
                     json.dumps(returnToken),
