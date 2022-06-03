@@ -165,7 +165,8 @@ class resend_otp(APIView):
 
 class login(APIView):
     def post(self,request):
-        logger.debug("login api called")
+        logger.debug("*******************login api called*******************")
+        logger.debug(datetime.now())
         password = request.data.get("password")
         mobile_number= request.data.get("mobile_number")
         device_type=request.data.get('device_type')
@@ -175,10 +176,12 @@ class login(APIView):
         logger.debug(self.request.data)
     
         if mobile_number is None or password is None:
+            logger.debug('Please provide both mobile and password')
             return Response({'message': 'Please provide both mobile and password '},
                             status=HTTP_400_BAD_REQUEST)
         user = authenticate(username=mobile_number, password=password)
         if not user:
+            logger.debug('Invalid Credentials')
             returnMessage = {'message': 'Invalid Credentials'}
             return HttpResponse(
             json.dumps(returnMessage),
@@ -214,6 +217,7 @@ class login(APIView):
                 'code':profileO.code,
                 #'mobile_number':User.username,
             }
+            logger.debug('Your account is not verified')
             returnMessage = {'message': 'Your account is not verified','token':token.key}
             return HttpResponse(
             json.dumps(returnMessage),
@@ -256,6 +260,7 @@ class login(APIView):
                     status=HTTP_200_OK
                 )
             else:
+                logger.debug('country code not match')
                 returnToken ={"message":"country code not match" }
                 return HttpResponse(
                     json.dumps(returnToken),
@@ -264,6 +269,7 @@ class login(APIView):
                 )
 
         else:
+            logger.debug('Device type and device token is incorrect')
             returnMessage = {'message': 'Device type and device token is incorrect'}
             return HttpResponse(
             json.dumps(returnMessage),
@@ -328,24 +334,24 @@ class verify_forgetpassword_otp(APIView):
 
 
 
-class forget_password(APIView):
-	def post(self,request):
-		password=request.data['password']
-		secret_key=request.data['secret_key']
-		if check_blank_or_null([password]):
-			if password.isalpha() == False and check_password(password):
-				if forget_otp.objects.filter(expire__gte=datetime.now(),secret_key=secret_key).exists():
-					fo=forget_otp.objects.get(expire__gte=datetime.now(),secret_key=secret_key)
-					user=User.objects.get(email=fo.user.email)
-					user.set_password(password)
-					user.save()
-					return Response({"message":"Password has been successfully changed"},status=HTTP_200_OK)
-				else:
-					 return Response({"message":"secret key is not exists"},status=HTTP_400_BAD_REQUEST)
-			else:
-				return Response({'message':'Password must alpha numeric.Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.'},status=HTTP_400_BAD_REQUEST)
-		else:
-			return Response({"message":"secret key can not empty"},status=HTTP_400_BAD_REQUEST) 
+# class forget_password(APIView):
+# 	def post(self,request):
+# 		password=request.data['password']
+# 		secret_key=request.data['secret_key']
+# 		if check_blank_or_null([password]):
+# 			if password.isalpha() == False and check_password(password):
+# 				if forget_otp.objects.filter(expire__gte=datetime.now(),secret_key=secret_key).exists():
+# 					fo=forget_otp.objects.get(expire__gte=datetime.now(),secret_key=secret_key)
+# 					user=User.objects.get(email=fo.user.email)
+# 					user.set_password(password)
+# 					user.save()
+# 					return Response({"message":"Password has been successfully changed"},status=HTTP_200_OK)
+# 				else:
+# 					 return Response({"message":"secret key is not exists"},status=HTTP_400_BAD_REQUEST)
+# 			else:
+# 				return Response({'message':'Password must alpha numeric.Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.'},status=HTTP_400_BAD_REQUEST)
+# 		else:
+# 			return Response({"message":"secret key can not empty"},status=HTTP_400_BAD_REQUEST) 
 
 
 
