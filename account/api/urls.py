@@ -10,7 +10,7 @@ urlpatterns = [
     path('login',login.as_view()),
     path('forget_password_otp',send_forgetpassword_otp.as_view()),
     path('verify_foget_otp',verify_forgetpassword_otp.as_view()),
-    path('forget_password',forget_password.as_view()),
+    # path('forget_password',forget_password.as_view()),
     path('change-password', ChangePasswordView.as_view()),
     path('contect',Contect.as_view()),
     path('savecountry',UserAddressListApiView.as_view()),
