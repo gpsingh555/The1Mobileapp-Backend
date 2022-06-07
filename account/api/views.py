@@ -334,24 +334,24 @@ class verify_forgetpassword_otp(APIView):
 
 
 
-# class forget_password(APIView):
-# 	def post(self,request):
-# 		password=request.data['password']
-# 		secret_key=request.data['secret_key']
-# 		if check_blank_or_null([password]):
-# 			if password.isalpha() == False and check_password(password):
-# 				if forget_otp.objects.filter(expire__gte=datetime.now(),secret_key=secret_key).exists():
-# 					fo=forget_otp.objects.get(expire__gte=datetime.now(),secret_key=secret_key)
-# 					user=User.objects.get(email=fo.user.email)
-# 					user.set_password(password)
-# 					user.save()
-# 					return Response({"message":"Password has been successfully changed"},status=HTTP_200_OK)
-# 				else:
-# 					 return Response({"message":"secret key is not exists"},status=HTTP_400_BAD_REQUEST)
-# 			else:
-# 				return Response({'message':'Password must alpha numeric.Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.'},status=HTTP_400_BAD_REQUEST)
-# 		else:
-# 			return Response({"message":"secret key can not empty"},status=HTTP_400_BAD_REQUEST) 
+class forget_password(APIView):
+	def post(self,request):
+		password=request.data['password']
+		secret_key=request.data['secret_key']
+		if check_blank_or_null([password]):
+			if password.isalpha() == False and check_password(password):
+				if forget_otp.objects.filter(expire__gte=datetime.now(),secret_key=secret_key).exists():
+					fo=forget_otp.objects.get(expire__gte=datetime.now(),secret_key=secret_key)
+					user=User.objects.get(email=fo.user.email)
+					user.set_password(password)
+					user.save()
+					return Response({"message":"Password has been successfully changed"},status=HTTP_200_OK)
+				else:
+					 return Response({"message":"secret key is not exists"},status=HTTP_400_BAD_REQUEST)
+			else:
+				return Response({'message':'Password must alpha numeric.Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.'},status=HTTP_400_BAD_REQUEST)
+		else:
+			return Response({"message":"secret key can not empty"},status=HTTP_400_BAD_REQUEST) 
 
 
 
