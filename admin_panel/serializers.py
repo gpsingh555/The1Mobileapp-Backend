@@ -13,6 +13,7 @@ from rest_framework.exceptions import APIException
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from account.models import *
+from .models import *
 
 class APIException400(APIException):
     status_code = 400

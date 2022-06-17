@@ -119,6 +119,8 @@ account/__pycache__
 account/migrations/*
 admin_panel/migrations/*
 admin_panel/__pycache__
+payment_mgmt/__pycache__
+payment_mgmt/migrations/*
 the1backend.sock
 static
 staticfiles
