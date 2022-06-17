@@ -27,6 +27,7 @@ from ..models import *
 from .serializers import *
 from .serializers import ChangePasswordSerializer
 from admin_panel.serializers import *
+from admin_panel.models import *
 
 
 import os
