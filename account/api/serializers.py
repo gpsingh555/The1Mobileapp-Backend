@@ -18,7 +18,7 @@ from django.contrib.gis.geos import Point
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
-
+from admin_panel.models import *
 
 class APIException400(APIException):
     status_code = 400
