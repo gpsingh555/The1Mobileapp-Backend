@@ -35,6 +35,18 @@ class UserChat(models.Model):
         return str(self.chat_group.name ) + str(self.sender)
 
 
+
+class UserChatSingle(models.Model):
+    sender=models.ForeignKey(User,on_delete=models.CASCADE)
+    receiver=models.ManyToManyField(User,related_name="chat1_receiver")
+    massage=models.CharField(max_length=1000)
+    attechment=models.ImageField()
+    created_date=models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return str(self.sender.username ) + str(self.sender)
+
+
 class UserAudioCall(models.Model):
     sender=models.ForeignKey(User,on_delete=models.CASCADE)
     receiver=models.ManyToManyField(User,blank=True,related_name='call_sender')
@@ -45,3 +57,14 @@ class UserAudioCall(models.Model):
 
     def __str__(self):
         return str(self.sender.username ) + str(self.sender)
+
+
+# class Message(models.Model):
+#     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+#     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+#     message = models.CharField(max_length=1200)
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#     is_read = models.BooleanField(default=False)
+ 
+#     def __str__(self):
+#         return self.message

@@ -968,6 +968,36 @@ class NewsRejectAPIView(APIView):
             return Response(context,status=HTTP_400_BAD_REQUEST)
 
 
+class SendUserChatSingle(APIView):
+    permission_classes=(IsAuthenticated,)
+    def post(self,request):
+        massage=request.data.get('massage')
+        attechment=request.data.get('attechment')
+        # try:
+        dr=UserChat.objects.create(sender=request.user,massage=massage,attechment=attechment)
+        print(dr)
+        dr.save()
+        return Response({'data':'Massage Send successfully'})
+        # except:
+        #     return Response({'data':'Massage Not Send'})
+
+
+
+# class SendUserChat(APIView):
+#     def post(self,request):
+#         try:
+#             mem=ChatGroupMember.objects.get(member=request.user,chat_group_id=request.data.get('chat_group_id'),is_accept=True)
+#         except:
+#             return Response('invalid credentials')
+#         try:
+        
+#             dr=UserChat.objects.create(chat_group_id=request.data.get('chat_group_id'),sender=mem,massage=request.data['massage'],attechment=request.data['attechment'])
+#             dr.save()
+#             return Response({'data':'Create data successfully'})
+           
+            
+#         except :
+#             return Response({'error':'something wrong'})
 
 
 
