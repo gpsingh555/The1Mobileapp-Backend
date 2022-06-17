@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     "corsheaders",
-    "admin_panel"
+    "admin_panel",
+    "payment_mgmt",
     
 ]
 
