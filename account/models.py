@@ -188,3 +188,5 @@ class UserReguest(models.Model):
         return str(self.user.id) + '-' + str(self.name)
 
 
+
+

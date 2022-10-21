@@ -866,3 +866,4 @@ class GetTokenAzure(APIView):
         return Response({'message':'Token Get Success','Token':token,'Identity':identity,'expires_on':expires_on})
 
    
+

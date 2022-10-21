@@ -32,8 +32,7 @@ urlpatterns = [
     path('groupmemberview',GroupMemberView.as_view()),
     path('CreateGroupAPIView',CreateGroupAPIView.as_view()),
     path('AddGroupMemberAPI',AddGroupMemberAPI.as_view()),
-    path('ShowAllUser',ShowAllUser.as_view()),
-    
+      
     
 
 ]
