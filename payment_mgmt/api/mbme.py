@@ -14,8 +14,8 @@ def auth_token_payload(**kwargs):
 
 def balance_and_Payment(**kwargs):
     payload = { 
-        "responseCode": "999",
-        "responseMessage": "Service not available"
+        "responseCode"
+        "responseMessage"
 }
     
 
@@ -27,9 +27,9 @@ def merchant_transaction_report(**kwargs):
 
 def merchant_pending_transaction(**kwargs):
     payload = {
-    "responseCode": "000",
+    "responseCode"
     "responseMessage"
-    "status": "PendingTransaction"
+    "status"
     "transactionid"
     }
 
