@@ -34,6 +34,8 @@ def auth_token():
 		return ''
 
 def balance_and_Payment(dd):
+	transactionid='transaction id'
+	balance='balance'
     
 	url= "https://qty.mbme.org:8080/v2/api/payment"
 
