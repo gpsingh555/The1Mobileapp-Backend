@@ -2,12 +2,10 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import (AllowAny,IsAuthenticated,)
-# from .permissions import IsTokenValid
 from rest_framework_jwt.authentication import  JSONWebTokenAuthentication
 from django.db import transaction
 from django.db.models import Q
 from .models import *
-from .serializers import *
 
 
 def auth_token():
@@ -54,7 +52,7 @@ def balance_and_Payment(dd):
 		
 		resp = resp.json()
 		if resp.get('TotalAmount')['Value'] not in [0,0.00,'0','0.00']:
-			MBMEBalanceAndPayment.objects.create(sender_city=dd.sender_detail.city,receiver_city=dd.receiver_detail.city,weight=round(float(dd.package_detail.actual_weight),2),rate=resp.get('TotalAmount')['Value'],company_id=1)
+			MBMEBalanceAndPayment.objects.create()
 		return resp.get('TotalAmount')['Value']
 	except Exception as e:
 		Logger.objects.create(app_name='Rate Response Error Aramex.....',content=str(e))
@@ -68,9 +66,7 @@ def merchant_transaction_report(dd):
 		'Content-Type': 'application/json',
 		'Accept': 'application/json'
 	}
-	payload =merchant_ransaction_report_payload(sender_region=sender_region,sender_city=sender_city,sender_postal_code=sender_postal_code,
-										  receiver_region=receiver_region,receiver_city=receiver_city,receiver_postal_code=receiver_postal_code,
-										  weight=weight)
+	payload =merchant_ransaction_report_payload()
 	payload = json.dumps(payload)
 	payload = json.loads(payload)
 	# print(payload)
@@ -122,7 +118,7 @@ def merchant_check_status_transactionid(dd):
 		'Content-Type': 'application/json',
 		'Accept': 'application/json'
 	}
-	payload =merchant_check_status_transactionid(dd)()
+	payload = merchant_check_status_transactionid(dd)()
 	payload = json.dumps(payload)
 	payload = json.loads(payload)
 	# print(payload)
@@ -132,7 +128,7 @@ def merchant_check_status_transactionid(dd):
 		# Logger.objects.create(app_name='Rate Response Aramex.....',content=resp.json())
 		resp = resp.json()
 		if resp.get('TotalAmount')['Value'] not in [0,0.00,'0','0.00']:
-			MBMEMerchantCheckStatuTransaction.objects.create(sender_city=dd.sender_detail.city,receiver_city=dd.receiver_detail.city,weight=round(float(dd.package_detail.actual_weight),2),rate=resp.get('TotalAmount')['Value'],company_id=1)
+			MBMEMerchantCheckStatuTransaction.objects.create()
 		return resp.get('TotalAmount')['Value']
 	except Exception as e:
 		Logger.objects.create(app_name='Rate Response Error Aramex.....',content=str(e))
@@ -156,7 +152,7 @@ def repost_pending_transaction_(dd):
 		# Logger.objects.create(app_name='Rate Response Aramex.....',content=resp.json())
 		resp = resp.json()
 		if resp.get('TotalAmount')['Value'] not in [0,0.00,'0','0.00']:
-			MBMERepostPendingTransaction.objects.create(sender_city=dd.sender_detail.city,receiver_city=dd.receiver_detail.city,weight=round(float(dd.package_detail.actual_weight),2),rate=resp.get('TotalAmount')['Value'],company_id=1)
+			MBMERepostPendingTransaction.objects.create()
 		return resp.get('TotalAmount')['Value']
 	except Exception as e:
 		Logger.objects.create(app_name='Rate Response Error Aramex.....',content=str(e))
@@ -187,6 +183,8 @@ def merchant_balance_check(dd):
 		return ''
 
 def transaction_list(dd):
+	'from_date'
+	'to_date'
 	
 	url = "https://qty.mbme.org:8080/v2/mbme/merchantTransactions"
 
@@ -204,7 +202,7 @@ def transaction_list(dd):
 		# Logger.objects.create(app_name='Rate Response Aramex.....',content=resp.json())
 		resp = resp.json()
 		if resp.get('TotalAmount')['Value'] not in [0,0.00,'0','0.00']:
-			MBMETransaction.objects.create(sender_city=dd.sender_detail.city,receiver_city=dd.receiver_detail.city,weight=round(float(dd.package_detail.actual_weight),2),rate=resp.get('TotalAmount')['Value'],company_id=1)
+			MBMETransaction.objects.create()
 		return resp.get('TotalAmount')['Value']
 	except Exception as e:
 		Logger.objects.create(app_name='Rate Response Error Aramex.....',content=str(e))
