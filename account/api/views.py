@@ -438,7 +438,7 @@ class Contect(APIView):
     #     #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
     #     #print(token)
 
-        return Response({'message': 'Token Get Success', 'data': data})
+        #return Response({'message': 'Token Get Success', 'data': data})
 
 
 class UserAddressListApiView(ListCreateAPIView):
@@ -896,9 +896,6 @@ class GetTokenAzure(APIView):
         #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
         # print(token)
 
-<<<<<<< HEAD
    
 
-=======
         return Response({'message': 'Token Get Success', 'Token': token, 'Identity': identity, 'expires_on': expires_on})
->>>>>>> 63ca53f4c569736f0eccdfb2247e044419e7e69b
