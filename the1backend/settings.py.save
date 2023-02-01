@@ -1,4 +1,4 @@
-
+ls
 """
 Django settings for the1backend project.
 
@@ -25,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4h)=jn)*hur7x$59tg!lrzosa_c#em)u2yelv%8%*v_j^36ymw'
+ [Service]
+  Environment=SECRET_KEY = 'django-insecure-4h)=jn)*hur7x$59tg!lrzosa_c#em)u2yelv%8%*v_j^36ymw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
