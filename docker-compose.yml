@@ -1,0 +1,24 @@
+
+
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: the1web
+    command: sh -c "python manage.py runserver 0.0.0.0:8002"
+
+    volumes:
+      - .:/app
+      - staticfiles:/app/static/
+    ports:
+      - 8002:8002
+    network_mode: "host"
+    restart: "on-failure"
+    environment:
+      - ENV=DEV
+
+volumes:
+  staticfiles:

@@ -44,13 +44,5 @@ urlpatterns = [
     path('NewsAprroveAPIView',NewsAprroveAPIView.as_view(),name="NewsAprroveAPIView"),
     path('NewsRejectAPIView',NewsRejectAPIView.as_view(),name='NewsRejectAPIView'),
     path('SendUserChatSingle',SendUserChatSingle.as_view(),name='SendUserChatSingle'),
-
-
-
-    
-  
-
-
-
      
 ]

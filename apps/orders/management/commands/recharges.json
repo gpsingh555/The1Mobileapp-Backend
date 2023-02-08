@@ -1,0 +1,51 @@
+[
+  {
+    "amount":25,
+    "recharge_type": "1",
+    "currency": "AED",
+    "service_type": "1",
+    "detail": "200MB + 200 MB Free Social"
+  },
+  {
+    "amount": 210,
+    "recharge_type": "1",
+    "currency": "AED",
+    "service_type": "1",
+    "detail": "5 GB + 3 GB Free Social"
+  },
+  {
+    "amount":157,
+    "recharge_type": "1",
+    "currency": "AED",
+    "service_type": "1",
+    "detail": "3GB + 2 GB Free Social"
+  },
+  {
+    "amount":110,
+    "recharge_type": "1",
+    "currency": "AED",
+    "service_type": "1",
+    "detail": "1.1GB + 1.1 GB Free Social"
+  },
+  {
+    "amount":55,
+    "recharge_type": "1",
+    "currency": "AED",
+    "service_type": "1",
+    "detail": "500MB + 500 MB Free Social"
+  },
+    {
+    "amount":315,
+    "recharge_type": "1",
+    "currency": "AED",
+    "service_type": "1",
+    "detail": "10GB + 5 GB Free Social"
+  },
+   {
+    "amount":525,
+    "recharge_type": "1",
+    "currency": "AED",
+    "service_type": "1",
+    "detail": "25GB + 15GB Free Social"
+  }
+]
