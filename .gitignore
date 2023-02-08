@@ -116,7 +116,6 @@ dmypy.json
 .idea/
 .pyre/
 account/__pycache__
-account/migrations/*
 admin_panel/migrations/*
 admin_panel/__pycache__
 payment_mgmt/__pycache__
@@ -126,3 +125,4 @@ static
 staticfiles
 media
 accounts.log
+.DS_Store

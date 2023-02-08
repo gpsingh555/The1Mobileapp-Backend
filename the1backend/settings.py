@@ -109,12 +109,12 @@ WSGI_APPLICATION = 'the1backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': 'django.contrib.gis.db.backends.mysql',
         'NAME': 'the1db',
         'USER': 'the1user',
         'PASSWORD': 'the1@321',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
