@@ -7,6 +7,6 @@
 
 CREATE USER 'the1user'@'localhost' IDENTIFIED BY 'the1@321';
 
-GRANT ALL ON the1db.* TO 'the1user'@'localhost';
+GRANT ALL ON the1db2.* TO 'the1user'@'localhost';
 
 # set ENV=DEV on server
