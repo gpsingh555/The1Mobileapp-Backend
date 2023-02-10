@@ -116,7 +116,8 @@ class PaymentUserListAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
-        data = PaymentManagementService(request).get_latest_payment_users()
+        user_id = kwargs.get("user_id")
+        data = PaymentManagementService(request).get_latest_payment_users(user_id)
         return response(data=data, message="success")
 
 

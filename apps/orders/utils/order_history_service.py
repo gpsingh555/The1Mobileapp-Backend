@@ -54,7 +54,7 @@ class OrderHistory:
             })
 
         if self.request.GET.get('order_type') in (ORDER_TYPE.MOBILE.value, ORDER_TYPE.ANY.value):
-            qs = Orders.objects.filter()
+            qs = Orders.objects.filter(user=self.request.user)
             if self.request.GET.get('search_by'):
                 print(self.request.GET.get('search_by'))
                 qs = qs.filter(order_id=self.request.GET.get('search_by'))
@@ -82,7 +82,7 @@ class OrderHistory:
 
         if self.request.GET.get('order_type') in (ORDER_TYPE.TRANSPORT.value, ORDER_TYPE.ANY.value):
 
-            qs = Orders.objects.filter()
+            qs = Orders.objects.filter(user=self.request.user)
             if self.request.GET.get('search_by'):
                 print(self.request.GET.get('search_by'))
                 qs = qs.filter(order_id=self.request.GET.get('search_by'))
