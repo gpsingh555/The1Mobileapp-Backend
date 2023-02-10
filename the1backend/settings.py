@@ -110,7 +110,8 @@ WSGI_APPLICATION = 'the1backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'the1db',
+        #'NAME': 'the1db',
+        'NAME': 'the1appdb',
         'USER': 'the1user',
         'PASSWORD': 'the1@321',
         'HOST': 'localhost',
