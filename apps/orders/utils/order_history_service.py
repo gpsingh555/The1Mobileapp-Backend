@@ -54,7 +54,7 @@ class OrderHistory:
             })
 
         if self.request.GET.get('order_type') in (ORDER_TYPE.MOBILE.value, ORDER_TYPE.ANY.value):
-            qs = Orders.objects.filter()
+            qs = Orders.objects.filter(user=self.request.user)
             if self.request.GET.get('search_by'):
                 print(self.request.GET.get('search_by'))
                 qs = qs.filter(order_id=self.request.GET.get('search_by'))
@@ -62,6 +62,9 @@ class OrderHistory:
             in_filter = []
             if self.request.GET.get('category') in (OrderHistoryCategory.DU.value, OrderHistoryCategory.ALL.value):
                 in_filter = [DU_PREPAID, DU_POSTPAID]
+
+            elif self.request.GET.get('category') in (OrderHistoryCategory.ETISALAT.value, OrderHistoryCategory.ALL.value):
+                in_filter.append(ETISALAT)
 
             qs = qs.filter(
                 service_type__in=in_filter
@@ -82,7 +85,7 @@ class OrderHistory:
 
         if self.request.GET.get('order_type') in (ORDER_TYPE.TRANSPORT.value, ORDER_TYPE.ANY.value):
 
-            qs = Orders.objects.filter()
+            qs = Orders.objects.filter(user=self.request.user)
             if self.request.GET.get('search_by'):
                 print(self.request.GET.get('search_by'))
                 qs = qs.filter(order_id=self.request.GET.get('search_by'))
@@ -90,8 +93,6 @@ class OrderHistory:
             in_filter = []
             if self.request.GET.get('category') == OrderHistoryCategory.SALIK_DIRECT.value:
                 in_filter.append(SALIK_DIRECT)
-            elif self.request.GET.get('category') == OrderHistoryCategory.ETISALAT.value:
-                in_filter.append(ETISALAT)
             elif self.request.GET.get('category') == OrderHistoryCategory.HAFILAT.value:
                 in_filter.append(HAFILAT)
             elif self.request.GET.get('category') == OrderHistoryCategory.NOL_TOPUP.value:
@@ -119,7 +120,8 @@ class OrderHistory:
 
     def get_order_detail(self):
         qs = Orders.objects.filter(user=self.request.user,
-                                   order_id=self.request.GET.get('order_id'))
+                                   order_id=self.request.GET.get('order_id')).prefetch_related(
+            "order_detail", "payment")
         if not qs.exists():
             raise APIException404({
                 "error": "no resource found"
@@ -142,9 +144,9 @@ class OrderHistory:
                 qs = qs.filter(order_id=self.request.GET.get('search_by'))
 
         if self.request.GET.get('category_filter') == ORDER_TYPE.MOBILE.value:
-            qs = qs.filter(service_type__in=[DU_PREPAID, DU_POSTPAID])
+            qs = qs.filter(service_type__in=[DU_PREPAID, DU_POSTPAID, ETISALAT])
         elif self.request.GET.get('category_filter') == ORDER_TYPE.TRANSPORT.value:
-            qs = qs.filter(service_type__in=[])
+            qs = qs.filter(service_type__in=[SALIK_DIRECT, HAFILAT, NOL_TOPUP])
 
         if self.request.GET.get('from_date') and self.request.GET.get('to_date'):
             qs = qs.filter(

@@ -26,9 +26,9 @@ class PaymentIntentCreateSerializer(serializers.Serializer):
     service_offered = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     current_balance = serializers.CharField(allow_null=True, required=False)
     provider_transaction_id = serializers.CharField(allow_null=True, allow_blank=True, required=False)
-    max_allowed = serializers.CharField(allow_null=True, allow_blank=True, required=True)
-    product_code = serializers.CharField(allow_null=True, allow_blank=True, required=True)
-    item_code = serializers.CharField(allow_null=True, allow_blank=True, required=True)
+    max_allowed = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    product_code = serializers.CharField(allow_null=True, allow_blank=True, required=False)
+    item_code = serializers.CharField(allow_null=True, allow_blank=True, required=False)
 
     def validate_recharge_number(self, value):
         if not value.isdigit():

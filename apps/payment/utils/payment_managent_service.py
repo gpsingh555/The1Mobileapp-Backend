@@ -63,7 +63,7 @@ class PaymentManagementService:
         offset = int(self.request.GET.get('offset', 0))
         data = {"limit": limit, "offset": offset}
 
-        qs = PaymentTransactions.objects.filter(user=self.request.user)
+        qs = PaymentTransactions.objects.filter(user=user_id)
 
         if self.request.GET.get('search_by'):
             qs = qs.filter(transaction_id=self.request.GET.get('search_by'))
