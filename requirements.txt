@@ -14,3 +14,6 @@ pillow
 gunicorn
 #psycopg2-binary==2.9.1
 django-environ
+pdfkit==1.0.0
+XlsxWriter==3.0.8
+
