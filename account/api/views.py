@@ -226,7 +226,7 @@ class login(APIView):
                     }
             logger.debug('Your account is not verified')
             returnMessage = {
-                'message': 'Your account is not verified', 'token': token.key}
+                'message': 'Your account is not verified',}
             return HttpResponse(
                 json.dumps(returnMessage),
                 content_type='application/javascript; charset=utf8',
