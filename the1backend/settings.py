@@ -64,6 +64,7 @@ INSTALLED_APPS += [
     'apps.notification',
     "apps.sub_admin",
     "apps.credit_points"
+
 ]
 
 REST_FRAMEWORK = {
@@ -111,8 +112,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
 
-        'NAME': 'the1db',
-        #'NAME': 'the1appdb',
+        # 'NAME': 'the1db',
+        'NAME': 'the1appdb',
         'USER': 'the1user',
         'PASSWORD': 'the1@321',
         'HOST': 'localhost',

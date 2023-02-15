@@ -7,7 +7,7 @@ def upload_news():
     print("Started  pulling news ....")
     for keyword in list(news_keyword.objects.all().values_list("keyword", flat=True)):
         print(f"started getting news for keyword => {keyword}")
-        newsapi = NewsApiClient(api_key='3b80f2716a74411eaeab937b44871cebn')
+        newsapi = NewsApiClient(api_key='3b80f2716a74411eaeab937b44871ceb')
         all_articles = newsapi.get_everything(q=keyword,
                                               from_param=str(date.today() - timedelta(1)),
                                               to=str(date.today() - timedelta(1)),
