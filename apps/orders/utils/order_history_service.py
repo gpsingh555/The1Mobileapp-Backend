@@ -63,7 +63,7 @@ class OrderHistory:
             if self.request.GET.get('category') in (OrderHistoryCategory.DU.value, OrderHistoryCategory.ALL.value):
                 in_filter = [DU_PREPAID, DU_POSTPAID]
 
-            elif self.request.GET.get('category') in (OrderHistoryCategory.ETISALAT.value, OrderHistoryCategory.ALL.value):
+            if self.request.GET.get('category') in (OrderHistoryCategory.ETISALAT.value, OrderHistoryCategory.ALL.value):
                 in_filter.append(ETISALAT)
 
             qs = qs.filter(
@@ -98,7 +98,7 @@ class OrderHistory:
             elif self.request.GET.get('category') == OrderHistoryCategory.NOL_TOPUP.value:
                 in_filter.append(NOL_TOPUP)
             elif self.request.GET.get('category') == OrderHistoryCategory.ALL.value:
-                in_filter = [ETISALAT, HAFILAT, NOL_TOPUP, SALIK_DIRECT]
+                in_filter = [HAFILAT, NOL_TOPUP, SALIK_DIRECT]
 
             if self.request.GET.get('month') == MonthFilter.TODAY.value:
                 qs = qs.filter(created_at__date=timezone.now().today())
