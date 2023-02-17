@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from rest_framework import serializers
 
@@ -30,6 +32,8 @@ class OrderListSerializer(serializers.ModelSerializer):
 
 class OrderDetailSerializer(serializers.ModelSerializer):
     transaction_details = serializers.SerializerMethodField()
+    service_offered = serializers.SerializerMethodField()
+    account_pin  =serializers.SerializerMethodField()
 
     def get_transaction_details(self, obj):
         payment_obj = obj.payment.first()
@@ -38,10 +42,26 @@ class OrderDetailSerializer(serializers.ModelSerializer):
                     "payment_method": payment_obj.payment_method, "payment_provider": payment_obj.payment_provider}
         return None
 
+    def get_service_offered(self, obj):
+        payment_detail = obj.payment.first()
+        if payment_detail:
+            if payment_detail.gateway_response:
+                return json.loads(payment_detail.gateway_response).get("metadata", {}).get("service_offered")
+
+        return None
+
+    def get_account_pin(self, obj):
+        payment_detail = obj.payment.first()
+        if payment_detail:
+            if payment_detail.gateway_response:
+                return json.loads(payment_detail.gateway_response).get("metadata", {}).get("account_pin")
+
+        return None
+
     class Meta:
         model = Orders
-        fields = ("created_at", "status", "amount", "recharge_number",
-                  "service_type", "recharge_type", "transaction_details", "order_id")
+        fields = ("created_at", "status", "amount", "recharge_number","service_offered",
+                  "service_type", "recharge_type", "transaction_details", "order_id", "account_pin")
 
 
 class OrderListViewSerializer(serializers.ModelSerializer):
