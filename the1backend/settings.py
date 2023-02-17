@@ -172,7 +172,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
 
-    ('* */7 * * *', 'account.cron.upload_news', '>> /tmp/scheduled_job.log'),
+    ('* * * * *', 'account.cron.upload_news', '>> /tmp/scheduled_job.log'),
     # ('*/5 * * * *', 'apps.orders.cron.scheduled.refresh_access_token')
 ]
 

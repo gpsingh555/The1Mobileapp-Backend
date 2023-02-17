@@ -66,7 +66,7 @@ class country(models.Model):
 
 
 class state(models.Model):
-    name = models.CharField(default="", max_length=50)
+    name = models.CharField(default="", max_length=255)
     country = models.ForeignKey(country, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -74,8 +74,9 @@ class state(models.Model):
 
 
 class city(models.Model):
-    name = models.CharField(default="", max_length=50)
+    name = models.CharField(default="", max_length=500)
     state = models.ForeignKey(state, on_delete=models.CASCADE)
+    country_id = models.ForeignKey(country , on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
