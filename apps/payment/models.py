@@ -49,7 +49,7 @@ class PaymentMethods(models.Model):
     country = models.ForeignKey(country, on_delete=models.CASCADE, related_name='country_payment_method')
     state = models.ForeignKey(state, on_delete=models.CASCADE, related_name='state_payment_method', blank=True, null=True)
     city = models.ForeignKey(city, on_delete=models.CASCADE, related_name='city_payment_method', blank=True, null=True)
-    #city=models.CharField(max_length=500)
+
     debit_card = models.BooleanField(default=True)
     credit_card = models.BooleanField(default=True)
     apple_pay = models.BooleanField(default=True)

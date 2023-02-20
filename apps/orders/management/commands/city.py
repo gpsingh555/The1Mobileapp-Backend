@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 # from apps.orders.models import country
-from account.models import city,state
+from account.models import city,state,country
 from the1backend.settings import BASE_DIR
 
 
@@ -25,9 +25,10 @@ class Command(BaseCommand):
                     st=state.objects.get(id=records["state_id"])
                     print(records["name"])
                     city.objects.update_or_create(
-                        name=records["name"],
-                        state=st,
-                        country_id=st.country
+                        # name=records["name"],
+                        # state=st,
+                        id=records["id"],
+                        defaults={'name':records['name'],'state':st,'country_id':country.objects.get(id=records["country_id"])}
                     )
 
         self.stdout.write("All City Saved Successfully")

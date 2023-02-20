@@ -21,7 +21,8 @@ class Command(BaseCommand):
             for records in data:
                 print(records["name"])
                 country.objects.update_or_create(
-                    name=records["name"]
+                    id=records["id"],
+                    defaults={'name':records['name']},
                 )
 
         self.stdout.write("All Country Saved Successfully")

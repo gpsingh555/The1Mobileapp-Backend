@@ -22,8 +22,10 @@ class Command(BaseCommand):
                 print(records)
                 if country.objects.filter(id=records["country_id"]).exists():
                     state.objects.update_or_create(
-                        name=records["name"],
-                        country=country.objects.get(id=records["country_id"])
+                        # name=records["name"],
+                        # country=country.objects.get(id=records["country_id"]),
+                        id=records["id"],
+                        defaults={'name':records['name'],'country':country.objects.get(id=records["country_id"])},
                     )
 
         self.stdout.write("All States Saved Successfully")
