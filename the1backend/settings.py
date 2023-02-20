@@ -112,8 +112,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
 
-        'NAME': 'the1db',
-        #'NAME': 'the1appdb',
+        #'NAME': 'the1db',
+        'NAME': 'the1appdb',
         'USER': 'the1user',
         'PASSWORD': 'the1@321',
         'HOST': 'localhost',
@@ -172,7 +172,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
 
-    ('* * * * *', 'account.cron.upload_news', '>> /tmp/scheduled_job.log'),
+    ('* */5 * * *', 'account.cron.upload_news', '>> /tmp/scheduled_job.log'),
     # ('*/5 * * * *', 'apps.orders.cron.scheduled.refresh_access_token')
 ]
 
@@ -202,7 +202,8 @@ LOGGING = {
         'applogfile': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, "logs/", "logs-" + str(date.today()) + ".log"),
+            # 'filename': os.path.join(BASE_DIR, "logs/", "logs-" + str(date.today()) + ".log"),
+            'filename': os.path.join(BASE_DIR,'accounts.log'),
             'maxBytes': 1024 * 1024 * 15,  # 15MB
             'backupCount': 10,
         },
