@@ -122,7 +122,9 @@ class signupSerializer(Serializer):
             raise ValidationError('Password should 8 charcters long')
         if check_password(password) == False:
             raise ValidationError(
-                'Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.')
+                   'invalid credentials'
+                # 'Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.'
+                 )
         try:
             latitude = float(latitude)
         except:
