@@ -58,7 +58,7 @@ class PaymentManagementService:
 
         return qs
 
-    def get_user_transactions(self):
+    def get_user_transactions(self, user_id):
         limit = int(self.request.GET.get('limit', 10))
         offset = int(self.request.GET.get('offset', 0))
         data = {"limit": limit, "offset": offset}
