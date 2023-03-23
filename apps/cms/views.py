@@ -45,4 +45,4 @@ class CMSAPIView(APIView):
         else:
             qs.delete()
 
-        return response(status_code=200, message='Successfully deleted')
+        return response(status_code=200, message='Successfully deleted Message')
