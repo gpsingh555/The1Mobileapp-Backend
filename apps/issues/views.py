@@ -50,7 +50,7 @@ class QueryViewSet(viewsets.ModelViewSet):
         return response(message="Updated Successfully", status_code=200)
 
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,  # or request.data
+        serializer = QueryCreateSerializer(data=request.data,  # or request.data
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
