@@ -17,3 +17,4 @@ django-environ
 pdfkit==1.0.0
 XlsxWriter==3.0.8
 
+

@@ -1,12 +1,13 @@
 from django.shortcuts import render
+from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from apps.notification.models import UserNotificationSetting
-from apps.notification.serializers import NotificationSerializer, NotificationUpdateSerializer
+from apps.notification.models import UserNotificationSetting, Notification
+from apps.notification.serializers import NotificationSerializer, NotificationUpdateSerializer, \
+    NotificationListSerializer, NotificationCreateSerializer
 from utils.exceptions import APIException404
 from utils.response import response
-
 
 
 # Create your views here.
@@ -39,3 +40,23 @@ class UserNotificationSettingAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return response(status_code=200, message='Successfully updated')
+
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationListSerializer
+    permission_classes = (IsAuthenticated,)
+    filter_backends = (filters.OrderingFilter,)
+    ordering = ('-created_at',)
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return NotificationCreateSerializer
+        return super(NotificationViewSet, self).get_serializer_class()
+
+    def list(self, request, *args, **kwargs):
+        qs = Notification.objects.all()
+        response_data = self.serializer_class(qs, many=True).data
+        return response(data=response_data, message="success")
+
+    

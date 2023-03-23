@@ -9,3 +9,8 @@ def get_unique_order_id():
 
 def get_unique_trans_id():
     return "TRANS"+timezone.now().strftime("%y%m%d%H%M%S")+str(randint(100, 999))
+
+
+def get_unique_ticket_id():
+    return "QRY"+timezone.now().strftime("%y%m%d%H%M%S")+str(randint(1, 9))
+
