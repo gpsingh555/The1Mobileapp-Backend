@@ -54,7 +54,7 @@ class QueryViewSet(viewsets.ModelViewSet):
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return response(message="successfully created", status_code=201)
+        return response(message="successfully created", status_code=200)
 
     @action(detail=False, methods=['GET'])
     def all(self, request, *args, **kwargs):
