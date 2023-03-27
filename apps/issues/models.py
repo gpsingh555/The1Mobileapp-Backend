@@ -19,5 +19,8 @@ class UserQuery(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = 'user_query'
+
     def __str__(self):
         return str(self.user.id) + '-' + str(self.ticket_id)

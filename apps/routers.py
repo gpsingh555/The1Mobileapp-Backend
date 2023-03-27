@@ -8,5 +8,6 @@ urlpatterns = [
     url("sub-admin/", include('apps.sub_admin.routers')),
     url("issues/", include('apps.issues.routers')),
     url("reports/", include('apps.reports.routers')),
+    url("chat/", include('apps.chat.routers')),
 
 ]

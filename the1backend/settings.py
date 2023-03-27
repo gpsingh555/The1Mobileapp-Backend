@@ -64,7 +64,8 @@ INSTALLED_APPS += [
     'apps.notification',
     "apps.sub_admin",
     "apps.credit_points",
-    "apps.issues"
+    "apps.issues",
+    "apps.chat"
 
 ]
 
@@ -111,14 +112,12 @@ WSGI_APPLICATION = 'the1backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-
-        #'NAME': 'the1db',
-        'NAME': 'the1appdb',
-        'USER': 'the1user',
-        'PASSWORD': 'the1@321',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': DATABASE_ENGINE,
+        'NAME': DATABASE_NAME,
+        'USER': DATABASE_USER,
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': DATABASE_HOST,
+        'PORT': DATABASE_PORT,
     }
 }
 

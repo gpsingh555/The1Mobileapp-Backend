@@ -165,7 +165,6 @@ class VerifyEtisalatCustomerAPIView(APIView):
         return response(message=msg, data=data)
 
 
-
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Orders.objects.all()
     serializer_class = OrderListViewSerializer
