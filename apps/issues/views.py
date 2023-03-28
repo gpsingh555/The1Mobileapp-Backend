@@ -27,7 +27,7 @@ class QueryViewSet(viewsets.ModelViewSet):
         return super(QueryViewSet, self).get_serializer_class()
 
     def list(self, request, *args, **kwargs):
-        qs = UserQuery.objects.filter(user=request.user)
+        qs = UserQuery.objects.filter(user=request.user).order_by("-created_at")
         response_data = self.serializer_class(qs, many=True).data
         return response(data=response_data, message="success")
 
@@ -60,6 +60,6 @@ class QueryViewSet(viewsets.ModelViewSet):
     def all(self, request, *args, **kwargs):
         """
         """
-        qs = UserQuery.objects.all()
+        qs = UserQuery.objects.all().order_by("-created_at")
         response_data = QueryPartialListSerializer(qs, many=True).data
         return response(data=response_data, message="success")
