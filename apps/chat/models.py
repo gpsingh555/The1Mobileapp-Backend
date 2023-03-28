@@ -7,13 +7,13 @@ from django.contrib.auth.models import User
 class ChatGroup(models.Model):
     group_id = models.CharField(max_length=40, blank=True, null=True)
     name = models.CharField(max_length=40)
-    admin_name = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chat_group")
+    admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chat_group")
     members = models.ManyToManyField(User, related_name='chat_group_members',
                                      through="chat.MemberInChatGroup")
 
     is_reported = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    group_icon = models.CharField(blank=True, null=True, max_length=1000)
+    group_id = models.CharField(blank=True, null=True, max_length=1000)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
