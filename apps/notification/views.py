@@ -1,15 +1,19 @@
+from django.db.models.functions import Concat
 from django.shortcuts import render
 from rest_framework import viewsets, filters
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from account.models import Userprofile
 from apps.notification.models import UserNotificationSetting, Notification
 from apps.notification.serializers import NotificationSerializer, NotificationUpdateSerializer, \
-    NotificationListSerializer, NotificationCreateSerializer
+    NotificationListSerializer, NotificationCreateSerializer, UserListNotificationSerializer
 from apps.notification.utils import Firebase
 from utils.exceptions import APIException404
 from utils.response import response
+from django.contrib.auth.models import User
+from django.db.models import Value as V, Q
 
 
 # Create your views here.
@@ -63,7 +67,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = NotificationCreateSerializer(data=request.data,  # or request.data
-                                           context={'request': request})
+                                                  context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
@@ -76,3 +80,20 @@ class NotificationViewSet(viewsets.ModelViewSet):
         if tokens:
             Firebase().send_notification(list(tokens), request.data)
         return response(message="successfully created", status_code=201)
+
+    @action(detail=False, methods=['GET'])
+    def users(self, request, *args, **kwargs):
+        """
+        """
+        query = self.request.GET.get('search')
+        data = []
+        if query:
+            data = User.objects.annotate(
+                full_name=Concat('first_name', V(' '), 'last_name')).filter(
+                Q(full_name__icontains=query) |
+                Q(username__icontains=query) |
+                Q(email__icontains=query)
+                ).values('id', "full_name", "email", "username").order_by("full_name")
+
+        return response(data=data, message="success")
+

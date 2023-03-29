@@ -17,7 +17,8 @@ urlpatterns = [
     path('group-chat-history', ChatGroupAPIView.as_view(), name='chat-group'),
 
     # Admin panel apis
-    # path('', CustomerBalanceAPIView.as_view(), name='postpaid-balance'),
+    # path('', ChatHistoryAPIView.as_view(), name=""),
+
 ]
 
 urlpatterns += router.urls

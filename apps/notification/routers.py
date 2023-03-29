@@ -8,8 +8,11 @@ router = SimpleRouter()
 
 router.register(r'', NotificationViewSet, basename='notification')
 
+
 urlpatterns = [
     path('user/setting', UserNotificationSettingAPIView.as_view(), name='user-notification-setting'),
+    # path('users', UserListViewSet.as_view(), name='users'),
+
 ]
 
 urlpatterns += router.urls

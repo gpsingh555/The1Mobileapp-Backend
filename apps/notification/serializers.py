@@ -5,6 +5,7 @@ from apps.cms.models import CMS
 from apps.notification.models import UserNotificationSetting, Notification
 from utils.exceptions import APIException400
 from django.db.models import Value as V
+from django.contrib.auth.models import User
 
 
 class NotificationSerializer(serializers.ModelSerializer):
@@ -35,3 +36,11 @@ class NotificationCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = ("users", "title", "desc")
+
+
+class UserListNotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ("id", "first_name", "last_name", "user_name", "email")
+

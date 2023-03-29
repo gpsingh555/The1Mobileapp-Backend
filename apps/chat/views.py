@@ -10,6 +10,12 @@ class UserChatHistoryAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     """
     """
+    # def get(self, request, *args, **kwargs):
+    #     data = request.data
+    #     serializer = UserChatHistorySerializer(data=data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return response(status_code=200, message='Successfully Created')
 
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -32,6 +38,18 @@ class UserAudioVideoCallHistoryAPIView(APIView):
 
 
 class ChatGroupAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    """
+    """
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = ChatGroupSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response(status_code=200, message='Successfully Created')
+
+
+class ChatAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     """
     """
