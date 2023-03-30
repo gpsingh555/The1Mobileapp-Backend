@@ -87,6 +87,7 @@ class signup(APIView):
             user = User.objects.get(email=request.data['email'].lower())
             profileO = Userprofile.objects.get(user=user)
             data = {
+                'user_id':user.id,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'email': user.email,
