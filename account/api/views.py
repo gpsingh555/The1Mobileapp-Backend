@@ -211,7 +211,9 @@ class login(APIView):
             profileO.device_type = device_type
             profileO.device_token = device_token
             profileO.save()
-            data = {'first_name': user.first_name,
+            data = {
+                    'user_id':user.id,
+                    'first_name': user.first_name,
                     'last_name': user.last_name,
                     'email': user.email,
                     'mobile_number': user.username,
