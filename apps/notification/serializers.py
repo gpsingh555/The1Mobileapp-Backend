@@ -29,7 +29,7 @@ class NotificationListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ("users", "title", "desc", "created_at")
+        fields = ("users", "title", "desc", "created_at", "id")
 
 
 class NotificationCreateSerializer(serializers.ModelSerializer):
