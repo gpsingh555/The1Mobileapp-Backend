@@ -246,7 +246,9 @@ class login(APIView):
             profileO.quickblox_id = quickblox_id
             profileO.save()
             if profileO.code == code:
-                data = {'first_name': user.first_name,
+                data = {
+                        'user_id':user.id,
+                        'first_name': user.first_name,
                         'last_name': user.last_name,
                         'email': user.email,
                         'mobile_number': user.username,
