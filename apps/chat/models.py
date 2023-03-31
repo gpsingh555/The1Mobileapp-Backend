@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 
 class ChatGroup(models.Model):
-    group_id = models.CharField(max_length=40, blank=True, null=True)
     name = models.CharField(max_length=40)
     admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chat_group")
     members = models.ManyToManyField(User, related_name='chat_group_members',
@@ -40,14 +39,14 @@ class UserChatHistory(models.Model):
     chat_init_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_chat_initiator')
     second_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_chat_second')
     is_active = models.BooleanField(default=True)
-    created_date = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
     is_reported = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'user_chat_history'
 
     def __str__(self):
-        return str(self.chat_group.name)
+        return str(self.id)
 
 
 class UserAudioVideoCallHistory(models.Model):
@@ -56,7 +55,7 @@ class UserAudioVideoCallHistory(models.Model):
     start_time = models.CharField(max_length=50, blank=True, null=True)
     end_time = models.CharField(max_length=50, blank=True, null=True)
     duration = models.CharField(max_length=50, blank=True, null=True)
-    group_id = models.ForeignKey(ChatGroup, blank=True, null=True, on_delete=models.SET_NULL)
+    group_id = models.CharField(blank=True, null=True, max_length=1000)
     created_date = models.DateTimeField(auto_now=True)
 
     class Meta:
