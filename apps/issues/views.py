@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from apps.issues.models import UserQuery
 from apps.issues.serializers import QueryCreateSerializer, QueryListSerializer, QueryUpdateSerializer, \
     QueryPartialListSerializer
+from apps.issues.utils import UsersQuery
 from utils.response import response
 
 
@@ -60,6 +61,5 @@ class QueryViewSet(viewsets.ModelViewSet):
     def all(self, request, *args, **kwargs):
         """
         """
-        qs = UserQuery.objects.all().order_by("-created_at")
-        response_data = QueryPartialListSerializer(qs, many=True).data
-        return response(data=response_data, message="success")
+        data = UsersQuery(request).get_all_query()
+        return response(data=data, message='success')

@@ -2,7 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-
+AUDIO, VIDEO = "1", "2"
+CALL_TYPE = (
+    (AUDIO, "AUDIO"),
+    (VIDEO, "VIDEO")
+)
 
 class ChatGroup(models.Model):
     name = models.CharField(max_length=40)
@@ -56,6 +60,7 @@ class UserAudioVideoCallHistory(models.Model):
     end_time = models.CharField(max_length=50, blank=True, null=True)
     duration = models.CharField(max_length=50, blank=True, null=True)
     group_id = models.CharField(blank=True, null=True, max_length=1000)
+    call_type = models.CharField(max_length=20, choices=CALL_TYPE, default=AUDIO)
     created_date = models.DateTimeField(auto_now=True)
 
     class Meta:

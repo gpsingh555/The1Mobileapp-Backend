@@ -9,5 +9,6 @@ urlpatterns = [
     url("issues/", include('apps.issues.routers')),
     url("reports/", include('apps.reports.routers')),
     url("chat/", include('apps.chat.routers')),
+    url("dashboard/", include('apps.dashboard.routers')),
 
 ]

@@ -1,4 +1,5 @@
 from django.db.models.functions import Concat
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework import viewsets, filters
 from rest_framework.decorators import action
@@ -9,7 +10,7 @@ from account.models import Userprofile
 from apps.notification.models import UserNotificationSetting, Notification
 from apps.notification.serializers import NotificationSerializer, NotificationUpdateSerializer, \
     NotificationListSerializer, NotificationCreateSerializer, UserListNotificationSerializer
-from apps.notification.utils import Firebase
+from apps.notification.utils import Firebase, Notifications
 from utils.exceptions import APIException404
 from utils.response import response
 from django.contrib.auth.models import User
@@ -61,9 +62,8 @@ class NotificationViewSet(viewsets.ModelViewSet):
         return super(NotificationViewSet, self).get_serializer_class()
 
     def list(self, request, *args, **kwargs):
-        qs = Notification.objects.all()
-        response_data = self.serializer_class(qs, many=True).data
-        return response(data=response_data, message="success")
+        data = Notifications(request).list_all_notification()
+        return response(data=data, message='success')
 
     def create(self, request, *args, **kwargs):
         serializer = NotificationCreateSerializer(data=request.data,  # or request.data
@@ -96,4 +96,5 @@ class NotificationViewSet(viewsets.ModelViewSet):
                 ).values('id', "full_name", "email", "username").order_by("full_name")
 
         return response(data=data, message="success")
+
 
