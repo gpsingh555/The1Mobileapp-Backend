@@ -21,7 +21,7 @@ class QueryCreateSerializer(serializers.ModelSerializer):
 class QueryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserQuery
-        fields = ("ticket_id", "status", 'subject', 'desc', "created_at")
+        fields = ("id", "ticket_id", "status", 'subject', 'desc', "created_at")
 
 
 class QueryPartialListSerializer(serializers.ModelSerializer):
