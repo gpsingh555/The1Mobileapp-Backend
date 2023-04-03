@@ -1,7 +1,7 @@
 from django.db.models import Q
 
 from apps.issues.models import UserQuery, OPEN, CLOSED
-from apps.issues.serializers import QueryListSerializer
+from apps.issues.serializers import QueryListSerializer, QueryPartialListSerializer
 from apps.orders.utils.order_history_service import SortingFilter
 
 
@@ -36,5 +36,5 @@ class UsersQuery:
         data["total_results"] = qs.count()
         qs = qs[offset:limit]
 
-        data["results"] = QueryListSerializer(qs, many=True).data
+        data["results"] = QueryPartialListSerializer(qs, many=True).data
         return data

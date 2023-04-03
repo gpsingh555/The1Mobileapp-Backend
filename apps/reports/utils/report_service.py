@@ -2,7 +2,7 @@ import os
 import xlsxwriter
 
 from django.conf import settings
-from django.db.models import F, Sum
+from django.db.models import F, Sum, Count, Q
 from rest_framework.authtoken.admin import User
 
 from apps.orders.models import Orders, COMPLETED, FAILED, PROCESSING, DU_PREPAID, ETISALAT, DU_POSTPAID, NOL_TOPUP, \
@@ -68,7 +68,7 @@ class GenerateReportService:
             # total completed orders
             report_data = Orders.objects.filter(status=COMPLETED).values(
                 "order_id", "user", "user__email", "service_type", "recharge_type", "recharge_number",
-                                                                                    "amount", "status", "created_at")
+                "amount", "status", "created_at")
             file_name = "completed_orders_report.xlsx"
             if r_type == "6":
                 file_name = "order_revenue_report.xlsx"
@@ -92,7 +92,7 @@ class GenerateReportService:
             settings.MEDIA_ROOT,
             file_name
         )
-        #print(report_data)
+        # print(report_data)
         workbook = xlsxwriter.Workbook(xlsx_file_path, options={'remove_timezone': True})
         worksheet = workbook.add_worksheet()
         worksheet.set_column(1, len(report_col), 25)
@@ -173,3 +173,41 @@ class GenerateReportService:
 
         workbook.close()
         return {"url": request.build_absolute_uri("/media/" + xlsx_file_path.split('media/')[-1])}
+
+
+class ReportData:
+
+    def generate_data(self):
+        user_count = User.objects.all().values('is_active').annotate(total=Count('is_active'))
+        order_count = Orders.objects.all().values("status").annotate(
+            total=Count('status'),
+            revenue=Sum('amount', filter=Q(status=1))
+        )
+        active_users = 0
+        inactive_users = 0
+        completed_orders = 0
+        failed_orders = 0
+        revenue = 0
+        if len(user_count) > 0:
+            for data in user_count:
+                if data.get("is_active"):
+                    active_users = data.get("total", 0)
+                else:
+                    inactive_users = data.get("total", 0)
+
+        if len(order_count) > 0:
+            for data in order_count:
+                if data.get("status") == COMPLETED:
+                    completed_orders = data.get("total", 0)
+                    revenue = data.get("revenue", 0)
+                elif data.get("status") == FAILED:
+                    failed_orders = data.get("total", 0)
+
+        return {
+            "total_users": active_users + inactive_users,
+            "active_users": active_users,
+            "inactive_users": inactive_users,
+            "failed_orders": failed_orders,
+            "completed_orders": completed_orders,
+            "revenue": revenue
+        }
