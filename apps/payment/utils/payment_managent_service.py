@@ -30,7 +30,7 @@ class PaymentManagementService:
             city=F('user__user_profile__city'),
         ).values(
             "user", "first_name", "last_name", "email", "mobile",
-            "country", "state", "city")
+            "country", "state", "city").order_by("-created_at")
 
         if self.request.GET.get('search_by'):
             if self.request.GET.get('search_by').isdigit():
@@ -63,7 +63,7 @@ class PaymentManagementService:
         offset = int(self.request.GET.get('offset', 0))
         data = {"limit": limit, "offset": offset}
 
-        qs = PaymentTransactions.objects.filter(user=user_id)
+        qs = PaymentTransactions.objects.filter(user=user_id).order_by("-created_at")
 
         if self.request.GET.get('search_by'):
             qs = qs.filter(transaction_id=self.request.GET.get('search_by'))

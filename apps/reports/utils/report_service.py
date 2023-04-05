@@ -178,7 +178,11 @@ class GenerateReportService:
 class ReportData:
 
     def generate_data(self):
-        user_count = User.objects.all().values('is_active').annotate(total=Count('is_active'))
+        user_count = User.objects.filter(
+            user_profile__is_subadmin=False,
+            is_superuser=False
+        ).values('is_active').annotate(total=Count('is_active'))
+
         order_count = Orders.objects.all().values("status").annotate(
             total=Count('status'),
             revenue=Sum('amount', filter=Q(status=1))

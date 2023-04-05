@@ -1,26 +1,21 @@
 from django.db import models
 
+TERMS_AND_COND, PRIVACY_POLICIES, FAQ, ABOUT_US, CONTACT_US = "1", "2", "3", "4", "5"
+
+CMS_TYPE_CHOICES = (
+    (TERMS_AND_COND, 'TERMS_AND_COND'),
+    (PRIVACY_POLICIES, 'PRIVACY_POLICIES'),
+    (FAQ, 'FAQ'),
+    (ABOUT_US, 'ABOUT_US'),
+    (CONTACT_US, 'CONTACT_US')
+)
+
 
 class CMS(models.Model):
-    DOCUMENTS, POLICIES, FAQ = "1", "2", "3"
-
-    CMS_TYPE_CHOICES = (
-        (DOCUMENTS, 'document'),
-        (POLICIES, 'policies'),
-        (FAQ, 'faq')
-    )
-
-    USER_POLICY, SELLER_POLICY = "1", "2"
-    POLICY_TYPE = (
-        (USER_POLICY, 'user'),
-        (SELLER_POLICY, 'seller')
-    )
-
-    heading = models.TextField()
+    heading = models.TextField(blank=True)
     description = models.TextField()
 
     cms_type = models.CharField(max_length=28, choices=CMS_TYPE_CHOICES)
-    policy_type = models.CharField(max_length=28, choices=POLICY_TYPE, blank=True)
 
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

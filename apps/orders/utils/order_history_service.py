@@ -135,7 +135,7 @@ class OrderHistory:
         offset = int(self.request.GET.get('offset', 0))
         data = {"limit": limit, "offset": offset}
 
-        qs = Orders.objects.filter()
+        qs = Orders.objects.filter().order_by("-created_at")
 
         if self.request.GET.get('search_by'):
             if self.request.GET.get('search_by').isdigit():

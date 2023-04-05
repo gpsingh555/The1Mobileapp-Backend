@@ -129,7 +129,14 @@ class view_users(APIView):
         if request.user.is_staff == True or SubAdminPermission.objects.filter(user=request.user,
                                                                               user_mgmt=True).exists():
             context = {}
-            noti = Userprofile.objects.filter(is_subadmin=False).order_by("-id")
+
+            if request.GET.get('status') == '1':
+                noti = Userprofile.objects.filter(is_subadmin=False, user__is_active=True).order_by("-id")
+            elif request.GET.get('status') == '2':
+                noti = Userprofile.objects.filter(is_subadmin=False, user__is_active=False).order_by("-id")
+            else:
+                noti = Userprofile.objects.filter(is_subadmin=False).order_by("-id")
+
             page = request.data.get('page', 1)
             paginator = Paginator(noti, 500)
             try:
