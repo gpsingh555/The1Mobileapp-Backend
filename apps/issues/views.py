@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.issues.models import UserQuery
 from apps.issues.serializers import QueryCreateSerializer, QueryListSerializer, QueryUpdateSerializer, \
-    QueryPartialListSerializer
+    QueryPartialListSerializer, QueryCommentUpdateSerializer
 from apps.issues.utils import UsersQuery
 from utils.response import response
 
@@ -63,3 +63,17 @@ class QueryViewSet(viewsets.ModelViewSet):
         """
         data = UsersQuery(request).get_all_query()
         return response(data=data, message='success')
+
+    @action(detail=True, methods=['POST'])
+    def update_comment(self, request, *args, **kwargs):
+        """
+        """
+        instance = self.get_object()
+        print("000")
+        serializer = QueryCommentUpdateSerializer(instance=instance,
+                                                  data=request.data,
+                                                  partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response(message="successfully updated", status_code=200)

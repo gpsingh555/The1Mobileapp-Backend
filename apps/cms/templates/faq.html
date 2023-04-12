@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        body {
+            background-color: rgb(137 225 253 / 27%);
+            padding-top: 10px;
+            overflow-y: scroll;
+            margin-left: 5px !important;
+            margin-right: 5px !important;
+        }
+
+        .heading {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .heading h1 {
+
+            font-size: 2rem;
+        }
+
+        h5 {
+            margin: 0px;
+            font-size: 1.3rem;
+        }
+        p{
+            color: #464444;
+        }
+
+        .heading h1 {
+            margin-bottom: 25px;
+        }
+
+
+
+        .cards {
+            padding: .5rem 1.5rem;
+            margin: 1rem 0rem;
+            background-color: rgb(250, 252, 253);
+        }
+
+        @media (max-width:450px) {
+            h5 {
+                font-size: 1rem;
+           }
+        }
+
+    </style>
+</head>
+
+<body>
+{% for faq in faqs %}
+    <div class="cards">
+        <h5> {{ faq.heading|safe }}
+        </h5>
+        <p>
+            {{ faq.description|safe }}
+        </p>
+    </div>
+
+{% endfor %}
+</body>
+
+</html>

@@ -1,21 +1,18 @@
-from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from apps.cms.models import CMS, TERMS_AND_COND, FAQ, ABOUT_US, CONTACT_US, PRIVACY_POLICIES
-from apps.cms.serializers import CMSListSerializer, CMSCreateSerializer, CMSUpdateSerializer
+from apps.cms.serializers import CMSCreateSerializer, CMSUpdateSerializer
 from utils.exceptions import APIException404
 from utils.response import response
 from django.shortcuts import render
-
-
-# Create your views here.
 
 
 class CMSAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     """
     """
+
     def get(self, request, *args, **kwargs):
         qs = CMS.objects.all().values("id", "cms_type", "heading", "description")
         out_data = {"faq": [], "contact_us": {}, "about_us": {}, "privacy_policy": {}, "terms_and_cond": {}}
@@ -65,6 +62,24 @@ class CMSAPIView(APIView):
 
 
 def StaticPagesForApplicationView(request):
+    params = request.GET.get("page")
+    if params == FAQ:
+        qs = CMS.objects.filter(cms_type=FAQ)
+        return render(request, "faq.html", {'faqs': qs})
+    else:
+        if params == TERMS_AND_COND:
+            qs = CMS.objects.filter(cms_type=TERMS_AND_COND)
+        elif params == PRIVACY_POLICIES:
+            qs = CMS.objects.filter(cms_type=PRIVACY_POLICIES)
+        elif params == ABOUT_US:
+            qs = CMS.objects.filter(cms_type=ABOUT_US)
+        elif params == CONTACT_US:
+            qs = CMS.objects.filter(cms_type=CONTACT_US)
+        else:
+            return render(request, "static_pages.html", {"content": ""})
 
-    return render(request, "faq.html")
-
+        if qs.exists():
+            content = qs.first().description
+        else:
+            content = ""
+        return render(request, "static_pages.html", {"content": content})
