@@ -43,7 +43,8 @@ class QueryUpdateSerializer(serializers.ModelSerializer):
 
 class QueryCommentUpdateSerializer(serializers.ModelSerializer):
     comment = serializers.CharField()
+    id = serializers.IntegerField()
 
     class Meta:
         model = UserQuery
-        fields = ("comment",)
+        fields = ("comment", "id")

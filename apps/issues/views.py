@@ -7,6 +7,7 @@ from apps.issues.models import UserQuery
 from apps.issues.serializers import QueryCreateSerializer, QueryListSerializer, QueryUpdateSerializer, \
     QueryPartialListSerializer, QueryCommentUpdateSerializer
 from apps.issues.utils import UsersQuery
+from utils.exceptions import APIException404
 from utils.response import response
 
 
@@ -64,13 +65,19 @@ class QueryViewSet(viewsets.ModelViewSet):
         data = UsersQuery(request).get_all_query()
         return response(data=data, message='success')
 
-    @action(detail=True, methods=['POST'])
+    @action(detail=False, methods=['POST'])
     def update_comment(self, request, *args, **kwargs):
         """
         """
-        instance = self.get_object()
-        print("000")
-        serializer = QueryCommentUpdateSerializer(instance=instance,
+        serializer = QueryCommentUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        print(serializer.validated_data)
+        qs = UserQuery.objects.filter(id=request.data.get("id")).order_by("-created_at")
+
+        if not qs.exists():
+            raise APIException404({"error": "Resource not found"})
+
+        serializer = QueryCommentUpdateSerializer(instance=qs.first(),
                                                   data=request.data,
                                                   partial=True)
 
