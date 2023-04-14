@@ -25,14 +25,19 @@ class QueryListSerializer(serializers.ModelSerializer):
 
 
 class QueryPartialListSerializer(serializers.ModelSerializer):
-    user_full_name = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
 
-    def get_user_full_name(self, obj):
-        return obj.user.first_name + " " + obj.user.last_name
+    def get_user(self, obj):
+        user = {
+            "full_name": obj.user.first_name + " " + obj.user.last_name,
+            "mobile": obj.user.username,
+            "email": obj.user.email
+        }
+        return user
 
     class Meta:
         model = UserQuery
-        fields = ("id", "ticket_id", "status", "subject", "comment", "created_at", "user", "desc", "user_full_name")
+        fields = ("id", "ticket_id", "status", "subject", "comment", "created_at", "user", "desc", "user")
 
 
 class QueryUpdateSerializer(serializers.ModelSerializer):
