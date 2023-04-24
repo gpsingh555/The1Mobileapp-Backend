@@ -417,8 +417,8 @@ class forget_password_admin(APIView):
                     return Response({"message": "secret key is not exists"}, status=HTTP_400_BAD_REQUEST)
             else:
                 return Response({
-                                    'message': 'Password must alpha numeric.Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.'},
-                                status=HTTP_400_BAD_REQUEST)
+                    'message': 'Password must alpha numeric.Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.'},
+                    status=HTTP_400_BAD_REQUEST)
         else:
             return Response({"message": "secret key can not empty"}, status=HTTP_400_BAD_REQUEST)
 

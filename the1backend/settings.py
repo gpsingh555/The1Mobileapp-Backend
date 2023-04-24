@@ -65,8 +65,8 @@ INSTALLED_APPS += [
     "apps.sub_admin",
     "apps.credit_points",
     "apps.issues",
-    "apps.chat"
-
+    "apps.chat",
+    "apps.settings"
 ]
 
 REST_FRAMEWORK = {

@@ -8,6 +8,36 @@ from django.db.models.fields.related import ForeignKey
 import pytz
 from rest_framework.fields import BooleanField
 
+ENGLISH, ARABIC = "1", "2"
+LANGUAGES_CHOICES = (
+    (ENGLISH, "ENGLISH"),
+    (ARABIC, "ARABIC")
+)
+
+
+class country(models.Model):
+    name = models.CharField(default="", max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class state(models.Model):
+    name = models.CharField(default="", max_length=255)
+    country = models.ForeignKey(country, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class city(models.Model):
+    name = models.CharField(default="", max_length=500)
+    state = models.ForeignKey(state, on_delete=models.CASCADE)
+    country_id = models.ForeignKey(country, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
 
 class Userprofile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
@@ -15,10 +45,10 @@ class Userprofile(models.Model):
     code = models.CharField(max_length=5, default="", blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
     sampledate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    image = models.ImageField(upload_to='Profile', default='noimage.png', blank=True, null=True)
+    image = models.ImageField(upload_to='Profile', default='profile/no-image.png', blank=True, null=True)
     # gender = models.CharField(max_length=100,default="Nogender",blank=True, null=True)
     role = models.CharField(max_length=100, blank=True, null=True)
-    country = models.CharField(default="", max_length=50)
+    country = models.ForeignKey(country, on_delete=models.SET_NULL, null=True)
     state = models.CharField(default="", max_length=50)
     city = models.CharField(default="", max_length=50)
     device_type = models.CharField(max_length=10, default="", blank=True, null=True)
@@ -30,6 +60,7 @@ class Userprofile(models.Model):
     is_subadmin = models.BooleanField(default=False)
     location = models.PointField(null=True)
     quickblox_id = models.CharField(max_length=20, default="", blank=True, null=True)
+    language = models.CharField(blank=True, null=True, choices=LANGUAGES_CHOICES, max_length=20)
 
     def __str__(self):
         return self.user.email
@@ -58,28 +89,6 @@ class forget_otp(models.Model):
         return self.user.email
 
 
-class country(models.Model):
-    name = models.CharField(default="", max_length=50)
-
-    def __str__(self):
-        return self.name
-
-
-class state(models.Model):
-    name = models.CharField(default="", max_length=255)
-    country = models.ForeignKey(country, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
-class city(models.Model):
-    name = models.CharField(default="", max_length=500)
-    state = models.ForeignKey(state, on_delete=models.CASCADE)
-    country_id = models.ForeignKey(country , on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
 
 
 class SubAdminPermission(models.Model):
