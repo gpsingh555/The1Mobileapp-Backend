@@ -403,6 +403,7 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 class Contect(APIView):
     def post(self, request):
+        
         mobile_number = request.data.get('mobile_number')
         if check_blank_or_null([mobile_number]) and User.objects.filter(username=mobile_number).exists():
             user = User.objects.get(username=mobile_number)
@@ -446,7 +447,10 @@ class Contect(APIView):
     #     #print("\nIssued an access token with 'voip' scope that expires at " + expires_on + ":")
     #     #print(token)
 
-        return Response({'message': 'Token Get Success', 'data': data})
+            return Response({'message': 'Token Get Success', 'data': data})
+        else:
+            return Response({'message': 'User Not Found',data:None}, status=HTTP_400_BAD_REQUEST)
+
 
 
 class UserAddressListApiView(ListCreateAPIView):

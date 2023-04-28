@@ -111,16 +111,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'the1backend.wsgi.application'
 
 DATABASES = {
+    
     'default': {
-        'ENGINE': DATABASE_ENGINE,
-        'NAME': DATABASE_NAME,
-        'USER': DATABASE_USER,
-        'PASSWORD': DATABASE_PASSWORD,
-        'HOST': DATABASE_HOST,
-        'PORT': DATABASE_PORT,
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'the1db',
+        'USER': 'the1user',
+        'PASSWORD': 'the1@321',
+        'HOST': 'localhost',
+        'PORT': '5432'
 
-    }
+        }
+
+    # 'default': {
+    #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
+    #     'NAME': 'the1database',
+    #     'USER': 'the1appuser',
+    #     'PASSWORD': 'the1app@321',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432'
+
+    #     }
 }
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
