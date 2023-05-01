@@ -122,6 +122,6 @@ class DUPrepaidAPIClient:
         if response.get("responseCode") == "000":
             return True, "Number verified successfully"
         elif response.get("responseCode") in ("302", "905", "906", "907"):
-            return False, "Invalid Mobile Number"
+            return False, "Enter in Format (05X)"
         else:
             raise APIException503()
