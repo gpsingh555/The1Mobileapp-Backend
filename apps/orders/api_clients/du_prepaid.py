@@ -24,7 +24,7 @@ class DUPrepaidAPIClient:
             if is_valid:
                 return True, "Number verified successfully"
             else:
-                return False, "Enter in Format (05X)"
+                return False, "Invalid Enter in Format (05X)"
 
         payload = {
             "transactionId": get_transaction_id(),
