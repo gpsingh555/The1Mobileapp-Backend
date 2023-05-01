@@ -77,7 +77,7 @@ class DUPostpaidBalanceAPIView(APIView):
         if number:
             if not number.isdigit() or len(number) > 10:
                 raise APIException400({
-                    "error": "Invalid mobile Number"
+                    "error": "Invalid Enter in Format (05X)"
                 })
             data = DUPostpaidAPIClient().get_customer_balance(number)
             return response(message="success", data=data)
@@ -94,7 +94,7 @@ class VerifyDUPrepaidAPIView(APIView):
         if number:
             if not number.isdigit() or len(number) > 10:
                 raise APIException400({
-                    "error": "Invalid mobile Number"
+                    "error": "Invalid Enter in Format (05X)"
                 })
             status, msg = DUPrepaidAPIClient().verify_customer_account(number)
             if not status:
