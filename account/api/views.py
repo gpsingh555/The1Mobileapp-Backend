@@ -449,7 +449,7 @@ class Contect(APIView):
 
             return Response({'message': 'Token Get Success', 'data': data})
         else:
-            return Response({'message': 'User Not Found',data:None}, status=HTTP_400_BAD_REQUEST)
+            return Response({'message': 'User Data Not Found',data:None}, status=HTTP_400_BAD_REQUEST)
 
 
 
