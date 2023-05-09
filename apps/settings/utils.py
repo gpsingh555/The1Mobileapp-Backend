@@ -8,7 +8,7 @@ class UserSetting:
             "first_name": user.first_name,
             "last_name": user.last_name,
             "email": user.email,
-            "mobile": user.username,
+            "mobile_number": user.username,
             "dob": user.user_profile.dob,
             "user_bio": user.user_profile.user_bio,
             "image": user.user_profile.image.url,
