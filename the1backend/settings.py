@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import platform
+import datetime
 from datetime import date
 from pathlib import Path
 import os
@@ -136,7 +137,13 @@ DATABASES = {
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+JWT_AUTH = {
 
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=30),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=30),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_AUTH_COOKIE': None,
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
