@@ -61,7 +61,7 @@ class Userprofile(models.Model):
     location = models.PointField(null=True)
     quickblox_id = models.CharField(max_length=20, default="", blank=True, null=True)
     language = models.CharField(blank=True, null=True, choices=LANGUAGES_CHOICES, max_length=20)
-    social_id=models.CharField(max_length=200,blank=True,null=True)
+    # social_id=models.CharField(max_length=200,blank=True,null=True)
    
     
     
