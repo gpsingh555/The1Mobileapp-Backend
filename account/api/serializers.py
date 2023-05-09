@@ -14,9 +14,7 @@ from ..models import *
 import random
 from rest_framework.fields import EmailField
 from rest_framework.exceptions import APIException
-from rest_framework_jwt.settings import api_settings
-jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 
@@ -34,7 +32,7 @@ class APIException401(APIException):
     status_code = 401
 
 
-USER_TYPE = (('0','Normal'),('1','Admin'),('2','SubAdmin'),('3','IndividualRestaurant'),('4','Supplier'),('5','ProcurementOfficer'))
+USER_TYPE = (('0','Normal'),('1','Admin'))
 GENDER_TYPE = (('1', 'MALE'),('2','FEMALE'),('3','OTHER'))
 ACCOUNT_TYPE = (('1','normal'),('2','google'),('3','twitter'),('4','apple'))
 DEVICE_TYPE = (('1','android'),('2','ios'),('3','web'))
@@ -55,7 +53,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         'device_type', 'device_token', 'user_type', 'when_add','is_verified']
     def validate(self, data):
         name=data['name']
-        # garage_name=data['garage_name']
+        
         country_code=data['country_code']
         mob=data['mobile']
         email=data['email']
@@ -96,12 +94,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
                 ruser_obj=ruser_qs.first()
 
                 user_obj=ruser_obj.user
-                payload = jwt_payload_handler(user_obj)
-                token = jwt_encode_handler(payload)
-                token = 'JWT '+ token
+                # payload = jwt_payload_handler(user_obj)
+                # token = jwt_encode_handler(payload)
+                # token = 'JWT '+ token
 
                 # data['email']=user_obj.email
-                data['token']=token
+                # data['token']=token
                 if ruser_obj.user.last_name:
                     data['name']=ruser_obj.user.first_name+' '+ruser_obj.user.last_name
                 else:
@@ -234,10 +232,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             ruser_obj.save()
         validated_data['token']=''
         if account_type in ('2','3','4') and user_type=='0':
-            payload = jwt_payload_handler(user_obj)
-            token = jwt_encode_handler(payload)
-            token = 'JWT '+token
-            validated_data['token'] = token
+            # payload = jwt_payload_handler(user_obj)
+            # token = jwt_encode_handler(payload)
+            # token = 'JWT '+token
+            # validated_data['token'] = token
             return validated_data
 
 def check_email(email):

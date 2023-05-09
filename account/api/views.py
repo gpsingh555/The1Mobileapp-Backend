@@ -940,10 +940,10 @@ class SocialSignupApiView(CreateAPIView):
                     data['device_type']=ruser_obj.device_type
                     data['device_token']=ruser_obj.device_token
                     user_obj=ruser_obj.User
-                    payload = jwt_payload_handler(user_obj)
-                    token = jwt_encode_handler(payload)
-                    token = 'JWT '+ token
-                    data['token']=token
+                    # payload = jwt_payload_handler(user_obj)
+                    # token = jwt_encode_handler(payload)
+                    # token = 'JWT '+ token
+                    # data['token']=token
                     data['country_code']=''
                     data['mobile']=''
                     data['email']=ruser_obj.email
@@ -969,10 +969,10 @@ class SocialSignupApiView(CreateAPIView):
                     # temp_user.save()
                     newdata=serializer.data
                     newobj=UserAccount.objects.get(email=temp_email)
-                    payload = jwt_payload_handler(newobj.User)
-                    token = jwt_encode_handler(payload)
-                    token = 'JWT '+ token
-                    newdata['token']=token
+                    # payload = jwt_payload_handler(newobj.User)
+                    # token = jwt_encode_handler(payload)
+                    # token = 'JWT '+ token
+                    # newdata['token']=token
                     return Response({'success':'True','message': 'data submitted successfully','data':newdata}, status=status.HTTP_200_OK ) #headers=headers)
                 return Response({'success':'false','message': 'data not submitted ','data':serializer.data}, status=status.HTTP_400_BAD_REQUEST ) #headers=headers)
             return Response({

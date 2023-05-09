@@ -13,7 +13,7 @@ LANGUAGES_CHOICES = (
     (ENGLISH, "ENGLISH"),
     (ARABIC, "ARABIC")
 )
-USER_TYPE = (('0','Normal'),('1','Admin'),('2','SubAdmin'),('3','IndividualRestaurant'),('4','Supplier'),('5','ProcurementOfficer'))
+USER_TYPE = (('0','Normal'),('1','Admin'))
 GENDER_TYPE = (('1', 'MALE'),('2','FEMALE'),('3','OTHER'),("4","Not Selected"))
 ACCOUNT_TYPE = (('1','normal'),('2','google'),('3','twitter'),('4','apple'))
 DEVICE_TYPE = (('1','android'),('2','ios'),('3','web'))
