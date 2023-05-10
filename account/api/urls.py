@@ -33,7 +33,6 @@ urlpatterns = [
     path('CreateGroupAPIView',CreateGroupAPIView.as_view()),
     path('AddGroupMemberAPI',AddGroupMemberAPI.as_view()),
     path('ShowAllUser',ShowAllUser.as_view()),
-    path('SocialSignup',SocialSignupApiView.as_view()),
     
     
 

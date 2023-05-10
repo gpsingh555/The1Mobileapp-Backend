@@ -13,10 +13,6 @@ LANGUAGES_CHOICES = (
     (ENGLISH, "ENGLISH"),
     (ARABIC, "ARABIC")
 )
-USER_TYPE = (('0','Normal'),('1','Admin'))
-GENDER_TYPE = (('1', 'MALE'),('2','FEMALE'),('3','OTHER'),("4","Not Selected"))
-ACCOUNT_TYPE = (('1','normal'),('2','google'),('3','twitter'),('4','apple'))
-DEVICE_TYPE = (('1','android'),('2','ios'),('3','web'))
 
 
 class country(models.Model):
@@ -65,7 +61,7 @@ class Userprofile(models.Model):
     location = models.PointField(null=True)
     quickblox_id = models.CharField(max_length=20, default="", blank=True, null=True)
     language = models.CharField(blank=True, null=True, choices=LANGUAGES_CHOICES, max_length=20)
-    # social_id=models.CharField(max_length=200,blank=True,null=True)
+    social_id=models.CharField(max_length=200,blank=True,null=True)
    
     
     
@@ -209,28 +205,4 @@ class UserReguest(models.Model):
     def __str__(self):
         return str(self.user.id) + '-' + str(self.name)
     
-class UserAccount(models.Model):
-    User=models.OneToOneField(User,on_delete=models.CASCADE)
-    first_name=models.CharField(max_length=70)
-    last_name=models.CharField(max_length=70,blank=True,null=True)
-    email=models.CharField(max_length=200)
-    Account_id=models.CharField(default="",max_length=20)
-    user_type = models.CharField(max_length=10, choices=USER_TYPE)
-    gender=models.CharField(max_length=10,choices=GENDER_TYPE)
-    country_code=models.CharField(max_length=5,blank=True,null=True)
-    date_of_birth=models.DateField(null=True,blank=True)
-    mobile_number=models.CharField(max_length=15,default="")
-    account_type =models.CharField(max_length=10,choices=ACCOUNT_TYPE)
-    device_type = models.CharField(max_length=10,choices=DEVICE_TYPE)
-    profile_image=models.ImageField(upload_to='User/profile_image',default='User/profile_image/default.jpg',null=True)
-    allergic_to=models.CharField(max_length=500,default='None',blank=True,null=True)
-    is_block=models.BooleanField(default=False)
-    is_verified=models.BooleanField(default=False)
-    location = models.PointField(null=True)
-    when_add = models.DateTimeField(auto_now_add = True)
-    loyalty_points=models.IntegerField(default=0)
-    device_token=models.CharField(max_length=200,blank=True,null=True)
-    social_id=models.CharField(max_length=200,blank=True,null=True)
-    
-    def __str__(self):
-    	return self.mobile_number
+

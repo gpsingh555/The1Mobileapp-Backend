@@ -3,7 +3,9 @@ from curses.ascii import US
 import json
 import random
 import re
-
+from rest_framework_jwt.settings import api_settings
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 from datetime import date, datetime, timedelta
 from account.cron import upload_news
 from django.contrib.auth import authenticate
@@ -912,74 +914,3 @@ class GetTokenAzure(APIView):
         return Response({'message': 'Token Get Success', 'Token': token, 'Identity': identity, 'expires_on': expires_on})
 
 
-class SocialSignupApiView(CreateAPIView):
-    serializer_class=UserRegisterSerializer
-    permission_classes=[AllowAny,]
-    authentication_classes=''
-    def create(self,request,*args,**kwargs):
-        logger.debug('user registration api called')
-        logger.debug(request.data)
-        account_type=request.data['account_type']
-        user_type=request.data['user_type']
-        data={}
-        if account_type in ('2','3','4',2,3,4):
-            social_id=request.data['social_id']
-            if social_id: 
-                ruser_qs = UserAccount.objects.filter(social_id__iexact=social_id)
-                if ruser_qs.exists() and ruser_qs.count()==1:
-                    ruser_obj=ruser_qs.first()
-                    if int(ruser_obj.user_type) != int(request.data['user_type']):
-                        return Response({
-                            'message':'User is not allow to authenticate',
-                            'success':'False',
-                        },status=status.HTTP_400_BAD_REQUEST,)
-                    data['when_add']=ruser_obj.when_add
-                    data['email']=ruser_obj.email
-                    data['name']=ruser_obj.User.first_name
-                    data['mobile']=ruser_obj.mobile_number
-                    data['device_type']=ruser_obj.device_type
-                    data['device_token']=ruser_obj.device_token
-                    user_obj=ruser_obj.User
-                    # payload = jwt_payload_handler(user_obj)
-                    # token = jwt_encode_handler(payload)
-                    # token = 'JWT '+ token
-                    # data['token']=token
-                    data['country_code']=''
-                    data['mobile']=''
-                    data['email']=ruser_obj.email
-                    data['account_type']=ruser_obj.account_type
-                    data['social_id']=ruser_obj.social_id
-                    data['user_type']=user_type
-                    return Response({
-                            'success':'True',
-                            'message': 'data retrieved successfully',
-                            'data':data
-                        }, status=status.HTTP_200_OK,)
-                serializer=self.get_serializer(data=request.data)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                temp_email=request.data['email']
-                if account_type=='4' or account_type==4:
-                    if not temp_email:
-                        temp_email=social_id+'@xyz63.com'
-                print('temp mail',temp_email)
-                if User.objects.filter(email=temp_email).exists():
-                    # temp_user=User.objects.get(email=temp_email)
-                    # temp_user.set_password(temp_pass)
-                    # temp_user.save()
-                    newdata=serializer.data
-                    newobj=UserAccount.objects.get(email=temp_email)
-                    # payload = jwt_payload_handler(newobj.User)
-                    # token = jwt_encode_handler(payload)
-                    # token = 'JWT '+ token
-                    # newdata['token']=token
-                    return Response({'success':'True','message': 'data submitted successfully','data':newdata}, status=status.HTTP_200_OK ) #headers=headers)
-                return Response({'success':'false','message': 'data not submitted ','data':serializer.data}, status=status.HTTP_400_BAD_REQUEST ) #headers=headers)
-            return Response({
-            'message':'Social id is required',
-            'success':'False',
-        },status=status.HTTP_400_BAD_REQUEST,)
-        return Response({
-            'message':'You are not authorised to login with this user type',
-            'success':'False',
-        },status=status.HTTP_400_BAD_REQUEST,)
