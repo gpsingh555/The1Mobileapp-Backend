@@ -93,10 +93,10 @@ class signupSerializer(Serializer):
                           min_value=0.0)
     longitude = FloatField(error_messages={'required': 'longitude is required', 'blank': 'longitude is required'},
                            min_value=0.0)
-    signup_type = CharField(error_messages={'required': 'signup_type is required', 'blank': 'signup_type is required'},
-                           max_length=10)
-    socialsignup_id = CharField(error_messages={'required': 'socialsignup_id is required', 'blank': 'socialsignup_id is required'},
-                           max_length=200)
+    # signup_type = CharField(error_messages={'required': 'signup_type is required', 'blank': 'signup_type is required'},
+    #                        max_length=10)
+    # socialsignup_id = CharField(error_messages={'required': 'socialsignup_id is required', 'blank': 'socialsignup_id is required'},
+    #                        max_length=200)
     # dob=CharField(required=False,allow_blank=True)
     referral_code = CharField(required=False, allow_blank=True)
 
