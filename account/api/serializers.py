@@ -457,7 +457,7 @@ class SocialsignupSerializer(Serializer):
     email = EmailField(max_length=400)
     # nationality = CharField(error_messages={'required':'nationality is required', 'blank':'nationality is required'},max_length=400)
     # gender = CharField(error_messages={'required':'Gender is required', 'blank':'Gender is required'},max_length=100)
-    password = CharField(error_messages={'required': 'password is required', 'blank': 'password is required'})
+    # password = CharField(error_messages={'required': 'password is required', 'blank': 'password is required'})
     device_token = CharField(
         error_messages={'required': 'device_token is required', 'blank': 'device_token is required'}, max_length=5000)
     device_type = CharField(error_messages={'required': 'device_type is required', 'blank': 'device_type is required'},
