@@ -447,3 +447,117 @@ class ShowUserSerializer(ModelSerializer):
             "email",
         ]
 
+class SocialsignupSerializer(Serializer):
+    first_name = CharField(error_messages={'required': 'First name is required', 'blank': 'first name is required'},
+                           max_length=400)
+    last_name = CharField(error_messages={'required': 'Last name is required', 'blank': 'last name is required'},
+                          max_length=400)
+    # mobile_number = CharField(
+    #     error_messages={'required': 'mobile number is required', 'blank': 'mobile number is required'}, max_length=20)
+    email = EmailField(max_length=400)
+    # nationality = CharField(error_messages={'required':'nationality is required', 'blank':'nationality is required'},max_length=400)
+    # gender = CharField(error_messages={'required':'Gender is required', 'blank':'Gender is required'},max_length=100)
+    password = CharField(error_messages={'required': 'password is required', 'blank': 'password is required'})
+    device_token = CharField(
+        error_messages={'required': 'device_token is required', 'blank': 'device_token is required'}, max_length=5000)
+    device_type = CharField(error_messages={'required': 'device_type is required', 'blank': 'device_type is required'},
+                            max_length=10)
+    # code = CharField(error_messages={'required': 'Country code is required', 'blank': 'Country code is required'},
+                    #  max_length=100)
+    # latitude = FloatField(error_messages={'required': 'latitude is required', 'blank': 'latitude is required'},
+                        #   min_value=0.0)
+    # longitude = FloatField(error_messages={'required': 'longitude is required', 'blank': 'longitude is required'},
+                        #    min_value=0.0)
+    signup_type = CharField(error_messages={'required': 'signup_type is required', 'blank': 'signup_type is required'},
+                           max_length=10)
+    socialsignup_id = CharField(error_messages={'required': 'socialsignup_id is required', 'blank': 'socialsignup_id is required'},
+                           max_length=200)
+    # dob=CharField(required=False,allow_blank=True)
+    # referral_code = CharField(required=False, allow_blank=True)
+
+    # user_bio=CharField(required=False,allow_blank=True)
+    def validate(self, data):
+        email = data.get('email').lower()
+        mobile_number = data.get('mobile_number')
+        password = data.get("password")
+        latitude = data.get("latitude")
+        longitude = data.get("longitude")
+        # referral_code =data.get('referral_code')
+        # gender = data.get("gender")
+        # dob=data.get("dob")
+        # print(dob)
+        if User.objects.filter(email=email).exists():
+            raise APIException400({
+                'success': "False",
+                'message': 'This email is already registered',
+            })
+        if User.objects.filter(username=mobile_number).exists():
+            raise APIException400({
+                'success': "False",
+                'message': 'This Mobile number is already registered',
+            })
+        if password.isalpha() == True:
+            raise ValidationError('Password must be alpha numeric')
+        # if gender not in ['male','female']:
+        # raise ValidationError('Gender must be male and female')
+        if len(password) < 8:
+            raise ValidationError('Password should 8 charcters long')
+        if check_password(password) == False:
+            raise ValidationError(
+                   'Pasword Should have at least one number.Password Should have at least one uppercase and one lowercase character.Password Should have at least one special symbol.Password Should be between 6 to 20 characters long.'
+                 )
+        try:
+            latitude = float(latitude)
+        except:
+            return ValidationError("latitude must be float number")
+        try:
+            longitude = float(longitude)
+        except:
+            return ValidationError("longitude must be float number")
+
+        # try:
+        #     dob=dob.split("/")
+        #     dobO1=dob[2]+"-"+dob[1]+"-"+dob[0]
+        #     dobO=datetime.strptime(dobO1,'%Y-%m-%d')
+        # except:
+        #     raise ValidationError("Date format is not right")
+        return data
+
+    def create(self, validated_data):
+        # dob=self.validated_data['dob']
+        # user_bio=self.validated_data['user_bio']
+
+        # dob=dob.split("/")
+        # dobO1=dob[2]+"-"+dob[1]+"-"+dob[0]
+        # dobO=datetime.strptime(dobO1,'%Y-%m-%d')
+
+        first_name = self.validated_data['first_name']
+        last_name = self.validated_data['last_name']
+        email = self.validated_data['email'].lower()
+        mobile_number = self.validated_data['mobile_number']
+        password = self.validated_data['password']
+        latitude = self.validated_data['latitude']
+        longitude = self.validated_data['longitude']
+        user = User.objects.create_user(username=mobile_number, email=email, password=password, first_name=first_name,
+                                        last_name=last_name)
+        user.save()
+        profileO = Userprofile.objects.create(user=user)
+        # profileO.mobile_number=self.validated_data['mobile_number']
+        # profileO.nationality=self.validated_data['nationality']
+        # profileO.gender=self.validated_data['gender']
+        profileO.code = self.validated_data['code']
+        profileO.device_token = self.validated_data['device_token']
+        profileO.device_type = self.validated_data['device_type']
+        profileO.referral_code = self.validated_data.get('referral_code', "")
+        profileO.location = Point(latitude, longitude, srid=4326)
+        # profileO.dob=dob
+        # profileO.user_bio=user_bio
+        # profileO.notification_key=get_random_string(random.randint(50,60))
+        profileO.save()
+        # otp=random.randint(1000,10000)
+        otp = 123456
+        sotp = signup_otp.objects.create(user=user, otp=otp)
+        sotp.expire = datetime.now() + timedelta(minutes=1440)
+        sotp.save()
+        return validated_data
+

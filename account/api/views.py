@@ -917,7 +917,7 @@ class GetTokenAzure(APIView):
 
 class Socialsignup(APIView):
     def post(self, request):
-        serializer = signupSerializer(data=request.data)
+        serializer = SocialsignupSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             user = User.objects.get(email=request.data['email'].lower())
