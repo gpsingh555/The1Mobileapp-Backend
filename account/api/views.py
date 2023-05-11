@@ -913,75 +913,37 @@ class GetTokenAzure(APIView):
 
         return Response({'message': 'Token Get Success', 'Token': token, 'Identity': identity, 'expires_on': expires_on})
 
-class socialsignupApiView(CreateAPIView):
-    serializer_class=UserRegisterSerializer
-    permission_classes=[AllowAny,]
-    authentication_classes=''
-    def create(self,request,*args,**kwargs):
-        logger.debug('user registration api called')
-        logger.debug(request.data)
-        account_type=request.data['account_type']
-        user_type=request.data['user_type']
-        data={}
-        if account_type in ('2','3','4',2,3,4):
-            social_id=request.data['social_id']
-            if social_id: 
-                ruser_qs = UserAccount.objects.filter(social_id__iexact=social_id)
-                if ruser_qs.exists() and ruser_qs.count()==1:
-                    ruser_obj=ruser_qs.first()
-                    if int(ruser_obj.user_type) != int(request.data['user_type']):
-                        return Response({
-                            'message':'User is not allow to authenticate',
-                            'success':'False',
-                        },status=status.HTTP_400_BAD_REQUEST,)
-                   
-                    data['email']=ruser_obj.email
-                    data['name']=ruser_obj.User.first_name
-                    data['mobile']=ruser_obj.mobile_number
-                    data['device_type']=ruser_obj.device_type
-                    data['device_token']=ruser_obj.device_token
-                    user_obj=ruser_obj.User
-                    payload = jwt_payload_handler(user_obj)
-                    token = jwt_encode_handler(payload)
-                    token = 'JWT '+ token
-                    data['token']=token
-                    data['country_code']=''
-                    data['mobile']=''
-                    data['email']=ruser_obj.email
-                    data['account_type']=ruser_obj.account_type
-                    data['social_id']=ruser_obj.social_id
-                    data['user_type']=user_type
-                    return Response({
-                            'success':'True',
-                            'message': 'data retrieved successfully',
-                            'data':data
-                        }, status=status.HTTP_200_OK,)
-                serializer=self.get_serializer(data=request.data)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                temp_email=request.data['email']
-                if account_type=='4' or account_type==4:
-                    if not temp_email:
-                        temp_email=social_id+'@xyz63.com'
-                print('temp mail',temp_email)
-                if User.objects.filter(email=temp_email).exists():
-                    # temp_user=User.objects.get(email=temp_email)
-                    # temp_user.set_password(temp_pass)
-                    # temp_user.save()
-                    newdata=serializer.data
-                    newobj=UserAccount.objects.get(email=temp_email)
-                    payload = jwt_payload_handler(newobj.User)
-                    token = jwt_encode_handler(payload)
-                    token = 'JWT '+ token
-                    newdata['token']=token
-                    return Response({'success':'True','message': 'data submitted successfully','data':newdata}, status=status.HTTP_200_OK ) #headers=headers)
-                return Response({'success':'false','message': 'data not submitted ','data':serializer.data}, status=status.HTTP_400_BAD_REQUEST ) #headers=headers)
-            return Response({
-            'message':'Social id is required',
-            'success':'False',
-        },status=status.HTTP_400_BAD_REQUEST,)
-        return Response({
-            'message':'You are not authorised to login with this user type',
-            'success':'False',
-        },status=status.HTTP_400_BAD_REQUEST,)
 
+
+class Socialsignup(APIView):
+    def post(self, request):
+        serializer = signupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            user = User.objects.get(email=request.data['email'].lower())
+            profileO = Userprofile.objects.get(user=user)
+            data = {
+                'user_id':user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'mobile_number': user.username,
+                'dob': profileO.dob,
+                'code': profileO.code,
+                'image': profileO.image.url,
+                'country': profileO.country,
+                'state': profileO.state,
+                'city': profileO.city,
+                'user_bio': profileO.role,
+                'signup_type':profileO.signup_type,
+                'socialsignup_id':profileO.socialsignup_id,
+                'device_type': profileO.device_type,
+                'device_token': profileO.device_token,
+                "latitude": profileO.location.x,
+                "longitude": profileO.location.y
+            }
+            token, created = Token.objects.get_or_create(user=user)
+            
+
+            return Response({'message': 'success', 'data': data, 'token': token.key}, status=HTTP_200_OK)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

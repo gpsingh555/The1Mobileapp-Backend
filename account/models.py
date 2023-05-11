@@ -15,7 +15,7 @@ LANGUAGES_CHOICES = (
 )
 USER_TYPE = (('0','Normal'),('1','Admin'))
 GENDER_TYPE = (('1', 'MALE'),('2','FEMALE'),('3','OTHER'),("4","Not Selected"))
-ACCOUNT_TYPE = (('1','normal'),('2','google'),('3','twitter'),('4','apple'))
+SIGNUP_TYPE = (('1','apple'),('2','google'),('3','twitter'))
 DEVICE_TYPE = (('1','android'),('2','ios'),('3','web'))
 
 
@@ -49,6 +49,8 @@ class Userprofile(models.Model):
     code = models.CharField(max_length=5, default="", blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
     sampledate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    signup_type = models.CharField(max_length=10,default="1")
+    socialsignup_id = models.CharField(max_length=200,blank=True,null=True)
     image = models.ImageField(upload_to='Profile', default='profile/no-image.png', blank=True, null=True)
     # gender = models.CharField(max_length=100,default="Nogender",blank=True, null=True)
     role = models.CharField(max_length=100, blank=True, null=True)
@@ -208,27 +210,5 @@ class UserReguest(models.Model):
 
     def __str__(self):
         return str(self.user.id) + '-' + str(self.name)
-    
 
-
-class UserAccount(models.Model):
-    User=models.OneToOneField(User,on_delete=models.CASCADE)
-    first_name=models.CharField(max_length=70)
-    last_name=models.CharField(max_length=70,blank=True,null=True)
-    email=models.CharField(max_length=200)
-    Account_id=models.CharField(default="",max_length=20)
-    user_type = models.CharField(max_length=10, choices=USER_TYPE)
-    gender=models.CharField(max_length=10,choices=GENDER_TYPE)
-    country_code=models.CharField(max_length=5,blank=True,null=True)
-    date_of_birth=models.DateField(null=True,blank=True)
-    mobile_number=models.CharField(max_length=15,default="")
-    account_type =models.CharField(max_length=10,choices=ACCOUNT_TYPE)
-    device_type = models.CharField(max_length=10,choices=DEVICE_TYPE)
-    profile_image=models.ImageField(upload_to='User/profile_image',default='User/profile_image/default.jpg',null=True)
-    location = models.PointField(null=True)
-    device_token=models.CharField(max_length=200,blank=True,null=True)
-    social_id=models.CharField(max_length=200,blank=True,null=True)
-    
-    def __str__(self):
-    	return self.mobile_number
 
