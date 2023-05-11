@@ -112,25 +112,25 @@ WSGI_APPLICATION = 'the1backend.wsgi.application'
 
 DATABASES = {
     
-    # 'default': {
-    #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
-    #     'NAME': 'the1db',
-    #     'USER': 'the1user',
-    #     'PASSWORD': 'the1@321',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432'
-
-    #     }
-
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'mobileappuser',
-        'USER': 'the1999',
-        'PASSWORD': 'app@999',
+        'NAME': 'the1db',
+        'USER': 'the1user',
+        'PASSWORD': 'the1@321',
         'HOST': 'localhost',
         'PORT': '5432'
 
         }
+
+    # 'default': {
+    #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
+    #     'NAME': 'mobileappuser',
+    #     'USER': 'the1999',
+    #     'PASSWORD': 'app@999',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432'
+
+    #     }
 }
 
 
