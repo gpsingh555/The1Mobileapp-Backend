@@ -388,7 +388,7 @@ class ChangePasswordView(generics.UpdateAPIView):
         if serializer.is_valid():
 
             if not self.object.check_password(serializer.data.get("old_password")):
-                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "Wrong password."}, status=status.HTTP_400_BAD_REQUEST)
 
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
@@ -915,35 +915,23 @@ class GetTokenAzure(APIView):
 
 
 
-class Socialsignup(APIView):
-    def post(self, request):
-        serializer = SocialsignupSerializer(data=request.data)
+class Socialsignup(CreateAPIView):
+    permission_classes = [AllowAny]
+    queryset = Userprofile.objects.all()
+    serializer_class = SocialsignupSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            user = User.objects.get(email=request.data['email'].lower())
-            profileO = Userprofile.objects.get(user=user)
-            data = {
-                'user_id':user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email,
-                'mobile_number': user.username,
-                'dob': profileO.dob,
-                'code': profileO.code,
-                'image': profileO.image.url,
-                'country': profileO.country,
-                'state': profileO.state,
-                'city': profileO.city,
-                'user_bio': profileO.role,
-                'signup_type':profileO.signup_type,
-                'socialsignup_id':profileO.socialsignup_id,
-                'device_type': profileO.device_type,
-                'device_token': profileO.device_token,
-                "latitude": profileO.location.x,
-                "longitude": profileO.location.y
-            }
-            token, created = Token.objects.get_or_create(user=user)
+            message = serializer.data['message']
+            data = serializer.data
+            del data['message']
             
-
+            token, created = Token.objects.get_or_create()
             return Response({'message': 'success', 'data': data, 'token': token.key}, status=HTTP_200_OK)
+        
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+        
+       

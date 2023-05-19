@@ -13,10 +13,10 @@ LANGUAGES_CHOICES = (
     (ENGLISH, "ENGLISH"),
     (ARABIC, "ARABIC")
 )
-USER_TYPE = (('0','Normal'),('1','Admin'))
+USER_TYPE = (('1','Normal'),('2','Admin'))
 GENDER_TYPE = (('1', 'MALE'),('2','FEMALE'),('3','OTHER'),("4","Not Selected"))
 SIGNUP_TYPE = (('1','apple'),('2','google'),('3','twitter'))
-DEVICE_TYPE = (('1','android'),('2','ios'),('3','web'))
+# DEVICE_TYPE = (('1','android'),('2','ios'),('3','web'))
 
 
 class country(models.Model):
@@ -45,11 +45,13 @@ class city(models.Model):
 
 class Userprofile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
+    user_type = models.CharField(max_length=10, choices=USER_TYPE, default=1)
     mobile_number = models.CharField(max_length=50, default="", blank=True, null=True)
     code = models.CharField(max_length=5, default="", blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
     sampledate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    signup_type = models.CharField(max_length=10,default="1")
+    signup_type = models.CharField(max_length=10, default=1)
+    email=models.CharField(max_length=200, default="")
     socialsignup_id = models.CharField(max_length=200,blank=True,null=True)
     image = models.ImageField(upload_to='Profile', default='profile/no-image.png', blank=True, null=True)
     # gender = models.CharField(max_length=100,default="Nogender",blank=True, null=True)
