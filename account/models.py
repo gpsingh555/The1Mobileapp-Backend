@@ -16,7 +16,7 @@ LANGUAGES_CHOICES = (
 USER_TYPE = (('1','Normal'),('2','Admin'))
 GENDER_TYPE = (('1', 'MALE'),('2','FEMALE'),('3','OTHER'),("4","Not Selected"))
 SIGNUP_TYPE = (('1','apple'),('2','google'),('3','twitter'))
-# DEVICE_TYPE = (('1','android'),('2','ios'),('3','web'))
+DEVICE_TYPE = (('1','android'),('2','ios'),('3','web'))
 
 
 class country(models.Model):

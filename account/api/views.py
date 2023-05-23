@@ -388,7 +388,7 @@ class ChangePasswordView(generics.UpdateAPIView):
         if serializer.is_valid():
 
             if not self.object.check_password(serializer.data.get("old_password")):
-                return Response({"message": "Wrong password."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "Incorrect old password."}, status=status.HTTP_400_BAD_REQUEST)
 
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
@@ -915,23 +915,7 @@ class GetTokenAzure(APIView):
 
 
 
-class Socialsignup(CreateAPIView):
-    permission_classes = [AllowAny]
-    queryset = Userprofile.objects.all()
-    serializer_class = SocialsignupSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            message = serializer.data['message']
-            data = serializer.data
-            del data['message']
-            
-            token, created = Token.objects.get_or_create()
-            return Response({'message': 'success', 'data': data, 'token': token.key}, status=HTTP_200_OK)
-        
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         
        

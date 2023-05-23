@@ -447,68 +447,7 @@ class ShowUserSerializer(ModelSerializer):
             "email",
         ]
 
-class SocialsignupSerializer(Serializer):
-    user_type = CharField(error_messages={"required": "user_type key is required", "blank": "user_type is required"})
-    device_type = CharField(
-        error_messages={"required": "device_type key is required", "blank": "device_type is required"})
-    signup_type = CharField(error_messages={'required':'signup_type key is required','blank':'signup_type is required'})
-    device_token = CharField(
-        error_messages={"required": "device_token key is required", "blank": "device_token is required"})
-    email = EmailField(error_messages={'required':'email key is required','blank':'email is required'})
-    socialsignup_id = CharField(error_messages={"required": "socialsignup_id key is required", "blank": "socialsignup_id is required"})
 
-
-    
-    def validate(self, data):
-        socialsignup_id = data['socialsignup_id']
-        user_type = data['user_type']
-        signup_type = data['signup_type']
-        device_type = data['device_type']
-        if device_type not in ('1', '2', '3'):
-            raise ValidationError("please insert a valid device type")
-        if signup_type not in ('1', '2','3'):
-            raise ValidationError("please insert a valid signup_type")
-        
-        return data
-    def create(self, validated_data):
-        user=''
-        message=''
-        user_qs = Userprofile.objects.filter(
-            socialsignup_id=validated_data['socialsignup_id'],
-            signup_type=validated_data['signup_type'],
-            email=validated_data['email'],
-            user_type=validated_data['user_type']
-        ).exclude(socialsignup_id__isnull=True).exclude(socialsignup_id__iexact='').distinct()
-
-        if user_qs.exists():
-            user = user_qs.first()
-            user.device_token=validated_data.get('device_token')
-            user.save()
-            message = "Login Successfully"
-
-        else:
-            user = Userprofile.objects.create(
-                username=validated_data['socialsignup_id']+validated_data['user_type']+validated_data['signup_type'],
-                email=validated_data['email'],
-                signup_type=validated_data['signup_type'],
-                socialsignup_id=validated_data['socialsignup_id'],
-                user_type=validated_data['user_type'],
-                device_token=validated_data['device_token']
-            )
-
-            if validated_data.get('code'):
-                user.code = validated_data['code']
-            if validated_data.get('mobile_number'):
-                user.mobile_number = validated_data['mobile_number']
-            if validated_data.get('country'):
-                user.country = validated_data['country']
-            if validated_data.get('state'):
-                user.city = validated_data['state']
-            if validated_data.get('city'):
-                user.city = validated_data['city']
-
-            
-            return validated_data
     
         
             
