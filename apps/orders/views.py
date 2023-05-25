@@ -183,3 +183,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         response_data = super(OrderViewSet, self).retrieve(request, *args, **kwargs).data
         return response(data=response_data, message="success")
+
+
+class SendOrderInvoiceAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        order_id = request.data.get("order_id")
+

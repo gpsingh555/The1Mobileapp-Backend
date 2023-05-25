@@ -12,6 +12,7 @@ class UserSetting:
             "dob": user.user_profile.dob,
             "user_bio": user.user_profile.user_bio,
             "image": user.user_profile.image.url,
+            "language": user.user_profile.language
         }
         if user.user_profile.country:
             data["country"] = {"country_id": user.user_profile.country.id,

@@ -7,7 +7,7 @@ from rest_framework.routers import SimpleRouter
 from apps.orders.views import PlaceOrderAPIView, AvailableRechargeAPIView, OrdersHistoryListAPIView, \
     DUPostpaidBalanceAPIView, OrdersHistoryDetailAPIView, OrderViewSet, VerifyDUPrepaidAPIView, \
     VerifyNOLCustomerAPIView, VerifySalikDirectCustomerAPIView, VerifyHafilatCustomerAPIView, \
-    VerifyEtisalatCustomerAPIView
+    VerifyEtisalatCustomerAPIView, SendOrderInvoiceAPIView
 
 router = SimpleRouter()
 
@@ -25,6 +25,7 @@ urlpatterns = [
     path('verify/salik-account', VerifySalikDirectCustomerAPIView.as_view(), name='verify-satic-account'),
     path('verify/hafilat-card', VerifyHafilatCustomerAPIView.as_view(), name='verify-hafilat-card'),
     path('verify/etisalat', VerifyEtisalatCustomerAPIView.as_view(), name='verify-etisalat'),
+    path('send-invoice', SendOrderInvoiceAPIView.as_view(), name='send-order-invoice'),
 
     # Admin panel apis
     # path('', CustomerBalanceAPIView.as_view(), name='postpaid-balance'),

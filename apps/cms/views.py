@@ -14,7 +14,7 @@ class CMSAPIView(APIView):
     """
 
     def get(self, request, *args, **kwargs):
-        qs = CMS.objects.all().values("id", "cms_type", "heading", "description")
+        qs = CMS.objects.all().values("id", "cms_type", "heading", "description").order_by("-created_at")
         out_data = {"faq": [], "contact_us": {}, "about_us": {}, "privacy_policy": {}, "terms_and_cond": {}}
         for data in qs:
             if data["cms_type"] == FAQ:

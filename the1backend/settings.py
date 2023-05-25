@@ -131,6 +131,18 @@ DATABASES = {
         'PORT': '5432'
 
         }
+
+#     'default': {
+#         'ENGINE': DATABASE_ENGINE,
+#         'NAME': DATABASE_NAME,
+#         'USER': DATABASE_USER,
+#         'PASSWORD': DATABASE_PASSWORD,
+#         'HOST': DATABASE_HOST,
+#         'PORT': DATABASE_PORT,
+#
+#
+# }
+
 }
 
 
@@ -247,3 +259,10 @@ LOGGING = {
 if platform.system() == "Darwin":
     GDAL_LIBRARY_PATH = "/opt/homebrew/Cellar/gdal/3.6.2/lib/libgdal.dylib"
     GEOS_LIBRARY_PATH = "/opt/homebrew/Cellar/geos/3.11.1/lib/libgeos_c.dylib"
+
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

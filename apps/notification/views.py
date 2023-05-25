@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from account.models import Userprofile
-from apps.notification.models import UserNotificationSetting, Notification
+from apps.notification.models import UserNotificationSetting, Notification, UserNotification
 from apps.notification.serializers import NotificationSerializer, NotificationUpdateSerializer, \
     NotificationListSerializer, NotificationCreateSerializer, UserListNotificationSerializer
 from apps.notification.utils import Firebase, Notifications
@@ -96,5 +96,15 @@ class NotificationViewSet(viewsets.ModelViewSet):
                 ).values('id', "full_name", "email", "username").order_by("full_name")
 
         return response(data=data, message="success")
+
+    @action(detail=False, methods=['GET'])
+    def all(self, request, *args, **kwargs):
+        """
+        """
+        print(request.user.id)
+        qs = UserNotification.objects.filter(user=request.user)
+        data = UserListNotificationSerializer(qs, many=True).data
+        return response(data=data, message="success")
+
 
 
