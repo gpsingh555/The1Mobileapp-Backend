@@ -188,4 +188,5 @@ class OrderViewSet(viewsets.ModelViewSet):
 class SendOrderInvoiceAPIView(APIView):
     def get(self, request, *args, **kwargs):
         order_id = request.data.get("order_id")
+        
 

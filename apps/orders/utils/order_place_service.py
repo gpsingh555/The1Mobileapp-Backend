@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 
+from apps.notification.utils import Firebase
 from apps.orders.api_clients.du_postpaid import DUPostpaidAPIClient
 from apps.orders.api_clients.du_prepaid import DUPrepaidAPIClient
 from apps.orders.api_clients.etisalat import EtisalatAPIClient
@@ -79,34 +80,55 @@ class OrderService:
                 return PROCESSING, in_process_msg
 
             elif self.payload["data"].get('status') == 'succeeded':
+                order_type = ""
                 recharge_status = PROCESSING
                 order = None
                 msg = ""
                 status = False
                 print(f'Got service Type =>{self.payload["data"]["metadata"].get("service_type")}')
                 if self.payload["data"]["metadata"].get('service_provider') == MBME:
-                    if self.payload["data"]["metadata"].get('service_type') in (DU_PREPAID, DU_POSTPAID):
+                    if self.payload["data"]["metadata"].get('service_type') == DU_PREPAID:
                         order, status = self.place_du_recharge_orders()
-
+                        order_type = "DU PREPAID"
+                    elif self.payload["data"]["metadata"].get('service_type') == DU_POSTPAID:
+                        order, status = self.place_du_recharge_orders()
+                        order_type = "DU POSTPAID"
                     elif self.payload["data"]["metadata"].get('service_type') == NOL_TOPUP:
                         print(f"Start placing {NOL_TOPUP}")
                         order, status = self.place_nol_orders()
-
+                        order_type = "NOL TOPUP"
                     elif self.payload["data"]["metadata"].get('service_type') == SALIK_DIRECT:
                         print(f"Start placing {SALIK_DIRECT}")
                         order, status = self.place_salik_direct_orders()
-
+                        order_type = "SALIK DIRECT"
                     elif self.payload["data"]["metadata"].get('service_type') == ETISALAT:
                         print(f"Start placing {ETISALAT}")
                         order, status = self.place_etisalat_orders()
-
+                        order_type = "ETISALAT"
                     elif self.payload["data"]["metadata"].get('service_type') == HAFILAT:
                         print(f"Start placing {HAFILAT}")
                         order, status = self.place_hafilat_orders()
+                        order_type = "HAFILAT"
+
+                    # send notification of payment success
+                    Firebase().send_notification(
+                        self.request.user.user_profile.device_token,
+                        {"title": "Payment Success",
+                         "desc": f'We have received your payment amount {self.payload["data"]["metadata"].get("amount")}'
+                         }
+                    )
 
                     if status == RECHARGE_COMPLETED:
                         recharge_status = COMPLETED
                         msg = success_msg
+
+                        # send notification of order success
+                        Firebase().send_notification(
+                            self.request.user.user_profile.device_token,
+                            {"title": "Order Success",
+                             "desc": f'We have successfully processed your order {order.order_id}'
+                             }
+                        )
                     else:
                         recharge_status = PROCESSING
                         msg = in_process_msg
@@ -114,6 +136,7 @@ class OrderService:
                 if order:
                     self.save_transaction(order, self.intent_id, self.payload["data"], TRANSACTION_COMPLETED,
                                           payment_method)
+
                 else:
                     raise APIException400({"error": "Invalid service type provided while payment Initiate api"})
 
