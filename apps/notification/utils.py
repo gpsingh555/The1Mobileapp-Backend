@@ -1,7 +1,9 @@
+import datetime
+
 from django.conf import settings
 from pyfcm import FCMNotification
 
-from apps.notification.models import Notification
+from apps.notification.models import Notification, NORMAL_NOTIFICATION, UserNotification
 from apps.notification.serializers import NotificationListSerializer
 
 
@@ -16,6 +18,28 @@ class Firebase:
             message_body=data["desc"]
         )
         print(result)
+
+        return result
+
+    def send_user_notification(self, user, title, desc, order_service_type):
+        # send notification of order
+        result = self.send_notification([user.user_profile.device_token],
+                                     {"title": title,
+                                      "desc": desc
+                                      })
+        is_send = False
+        if result.get("success") == 1:
+            is_send = True
+        # save user notification
+        UserNotification.objects.create(
+            user=user,
+            title=title,
+            desc=desc,
+            is_send=is_send,
+            notification_type=NORMAL_NOTIFICATION,
+            order_service_type=order_service_type,
+            sent_at=datetime.datetime.now()
+        )
 
 
 class Notifications:

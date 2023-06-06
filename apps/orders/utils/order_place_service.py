@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 
+from apps.notification.models import NORMAL_NOTIFICATION, UserNotification
 from apps.notification.utils import Firebase
 from apps.orders.api_clients.du_postpaid import DUPostpaidAPIClient
 from apps.orders.api_clients.du_prepaid import DUPrepaidAPIClient
@@ -53,6 +54,14 @@ class OrderService:
                     self.payload["data"]["metadata"], FAILED, PAYMENT_FAILED
                 )
                 self.save_transaction(order, self.intent_id, self.payload["data"], TRANSACTION_FAILED, payment_method)
+                # send notification of payment success
+                Firebase().send_user_notification(
+                    self.request.user,
+                    "Payment Failed",
+                    f'We have not received your payment amount {self.payload["data"]["metadata"].get("amount")}',
+                    self.payload["data"]["metadata"].get('service_type')
+                )
+
                 return FAILED, failed_msg
 
             elif self.payload["data"].get('status') in ("requires_payment_method", "requires_source", 'requires_action',
@@ -66,6 +75,14 @@ class OrderService:
                 )
                 self.save_transaction(order, self.intent_id, self.payload["data"], TRANSACTION_CANCELLED,
                                       payment_method)
+
+                # send notification of payment success
+                Firebase().send_user_notification(
+                    self.request.user,
+                    "Payment Cancelled",
+                    f'We have not received your payment amount {self.payload["data"]["metadata"].get("amount")}',
+                    self.payload["data"]["metadata"].get('service_type')
+                )
                 return FAILED, failed_msg
 
             elif self.payload["data"].get('status') == 'processing':
@@ -111,23 +128,22 @@ class OrderService:
                         order_type = "HAFILAT"
 
                     # send notification of payment success
-                    Firebase().send_notification(
-                        self.request.user.user_profile.device_token,
-                        {"title": "Payment Success",
-                         "desc": f'We have received your payment amount {self.payload["data"]["metadata"].get("amount")}'
-                         }
+                    Firebase().send_user_notification(
+                        self.request.user,
+                        "Payment Success",
+                        f'We have received your payment amount {self.payload["data"]["metadata"].get("amount")}',
+                        self.payload["data"]["metadata"].get('service_type')
                     )
 
                     if status == RECHARGE_COMPLETED:
                         recharge_status = COMPLETED
                         msg = success_msg
-
                         # send notification of order success
-                        Firebase().send_notification(
-                            self.request.user.user_profile.device_token,
-                            {"title": "Order Success",
-                             "desc": f'We have successfully processed your order {order.order_id}'
-                             }
+                        Firebase().send_user_notification(
+                            self.request.user,
+                            "Order Success",
+                            f'We have successfully processed your order {order.order_id}',
+                            self.payload["data"]["metadata"].get('service_type')
                         )
                     else:
                         recharge_status = PROCESSING

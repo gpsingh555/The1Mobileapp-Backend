@@ -4,7 +4,8 @@ from django.db.models.functions import Concat
 from rest_framework import serializers
 
 from apps.cms.models import CMS
-from apps.notification.models import UserNotificationSetting, Notification, NORMAL_NOTIFICATION, UserNotification
+from apps.notification.models import UserNotificationSetting, Notification, NORMAL_NOTIFICATION, UserNotification, \
+    BROADCAST_NOTIFICATION
 from utils.exceptions import APIException400
 from django.db.models import Value as V
 from django.contrib.auth.models import User
@@ -50,7 +51,7 @@ class NotificationCreateSerializer(serializers.ModelSerializer):
                 admin_notification=obj,
                 title=validated_data["title"],
                 desc=validated_data["desc"],
-                notification_type=NORMAL_NOTIFICATION,
+                notification_type=BROADCAST_NOTIFICATION,
                 sent_at=datetime.datetime.now()
             ))
         UserNotification.objects.bulk_create(notification_objs)
