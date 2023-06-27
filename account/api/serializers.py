@@ -179,7 +179,7 @@ class signupSerializer(Serializer):
         # profileO.user_bio=user_bio
         # profileO.notification_key=get_random_string(random.randint(50,60))
         profileO.save()
-        otp=random.randint(1000,10000)
+        otp=random.randint(100000,999999)
         # otp = 123456
         sotp = signup_otp.objects.create(user=user, otp=otp)
         sotp.expire = datetime.now() + timedelta(minutes=1440)
