@@ -2,7 +2,7 @@ from django.urls import path
 from .views import *
 from django.conf.urls.static import static
 from django.conf import settings
-
+from ..message import send_otp
 urlpatterns = [
     path('signup',signup.as_view()),
     path('verify_signup_otp',verify_signup_otp.as_view()),
@@ -33,6 +33,7 @@ urlpatterns = [
     path('CreateGroupAPIView',CreateGroupAPIView.as_view()),
     path('AddGroupMemberAPI',AddGroupMemberAPI.as_view()),
     path('ShowAllUser',ShowAllUser.as_view()),
+    path('send-otp/', send_otp_view, name='send_otp'),
     
     
     

@@ -1,6 +1,7 @@
 import logging
 from curses.ascii import US
 import json
+
 import random
 import re
 from rest_framework_jwt.settings import api_settings
@@ -33,6 +34,12 @@ from .serializers import *
 from .serializers import ChangePasswordSerializer
 from admin_panel.serializers import *
 from admin_panel.models import *
+from twilio.rest import Client
+from django.conf import settings
+from django.shortcuts import render
+from ..message import send_otp
+from django.http import HttpResponse
+
 
 
 import os
@@ -108,8 +115,9 @@ class signup(APIView):
                 "longitude": profileO.location.y
             }
             token, created = Token.objects.get_or_create(user=user)
-            UserNotificationSetting.objects.create(user=user)
 
+            UserNotificationSetting.objects.create(user=user)
+            send_otp=signup_otp
             return Response({'message': 'success', 'data': data, 'token': token.key}, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -912,6 +920,17 @@ class GetTokenAzure(APIView):
         # print(token)
 
         return Response({'message': 'Token Get Success', 'Token': token, 'Identity': identity, 'expires_on': expires_on})
+
+
+def send_otp_view(request):
+    phone_number = '+919528344428'  # Replace with the actual recipient's phone number
+    otp = '123456'  # Generate or retrieve the OTP here
+
+    message_sid = send_otp(phone_number, otp)
+    if message_sid:
+        return HttpResponse('OTP sent successfully.')
+    else:
+        return HttpResponse('Failed to send OTP.')
 
 
 
