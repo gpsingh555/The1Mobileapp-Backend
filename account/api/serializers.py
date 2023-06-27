@@ -184,7 +184,7 @@ class signupSerializer(Serializer):
         sotp = signup_otp.objects.create(user=user, otp=otp)
         sotp.expire = datetime.now() + timedelta(minutes=1440)
         sotp.save()
-        Send_SMS_User(otp,mobile_number)
+        Send_SMS_User(otp,mobile_number,profileO.code)
         return validated_data
 
 
