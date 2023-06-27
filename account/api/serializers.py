@@ -23,7 +23,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from admin_panel.models import *
-
+from ..utils import Send_SMS_User
 
 class APIException400(APIException):
     status_code = 400
@@ -179,11 +179,12 @@ class signupSerializer(Serializer):
         # profileO.user_bio=user_bio
         # profileO.notification_key=get_random_string(random.randint(50,60))
         profileO.save()
-        # otp=random.randint(1000,10000)
-        otp = 123456
+        otp=random.randint(1000,10000)
+        # otp = 123456
         sotp = signup_otp.objects.create(user=user, otp=otp)
         sotp.expire = datetime.now() + timedelta(minutes=1440)
         sotp.save()
+        Send_SMS_User(otp,mobile_number)
         return validated_data
 
 
