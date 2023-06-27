@@ -3,8 +3,8 @@
 import os
 from twilio.rest import Client
 
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
+account_sid = 'AC84e3fcec68ed594f5dd4f69b56ac3ea6'
+auth_token = '8bb450c45a3261d3d0106471c47a2cf0'
 
 def Send_SMS_User(otp,phonenumber):
     client = Client(account_sid, auth_token)
