@@ -40,7 +40,7 @@ from django.shortcuts import render
 from ..message import send_otp
 from django.http import HttpResponse
 import logging
-logger = logging.getLogger('accounts')
+# logger = logging.getLogger('accounts')
 
 
 
@@ -92,7 +92,7 @@ def check_password(password):
 
 
 class signup(APIView):
-    logger.debug('---signup_Successfully----------')
+    # logger.debug('---signup_Successfully----------')
     def post(self, request):
         serializer = signupSerializer(data=request.data)
         if serializer.is_valid():
