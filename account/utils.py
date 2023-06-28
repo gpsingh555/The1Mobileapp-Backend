@@ -9,7 +9,7 @@ auth_token = '8bb450c45a3261d3d0106471c47a2cf0'
 def Send_SMS_User(otp,phonenumber,code):
     client = Client(account_sid, auth_token)
     message = client.messages.create(
-                     body=f"Your OTP {otp} has been successfully registered",
+                     body=f"{otp} is your one time password (OTP). Please enter the OTP to proceed.",
                      from_='+14179893980',
                      to=code + phonenumber
                  )
