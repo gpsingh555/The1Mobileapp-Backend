@@ -184,7 +184,7 @@ class signupSerializer(Serializer):
         try:
             Send_SMS_User(otp,mobile_number,profileO.code)
         except Exception as e:
-            print(e)
+            print("signup OTP"+otp)
              
         return validated_data
 
