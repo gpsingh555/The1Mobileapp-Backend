@@ -158,8 +158,10 @@ class signupSerializer(Serializer):
         password = self.validated_data['password']
         latitude = self.validated_data['latitude']
         longitude = self.validated_data['longitude']
-        user = User.objects.create_user(username=mobile_number, email=email, password=password, first_name=first_name,
-                                        last_name=last_name)
+        user = User.objects.create_user(username=mobile_number, password=password)
+        user.email=email
+        user.first_name=first_name
+        user.last_name=last_name
         user.save()
         profileO = Userprofile.objects.create(user=user)
         # profileO.mobile_number=self.validated_data['mobile_number']
