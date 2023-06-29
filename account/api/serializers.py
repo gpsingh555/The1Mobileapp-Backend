@@ -111,11 +111,6 @@ class signupSerializer(Serializer):
         # gender = data.get("gender")
         # dob=data.get("dob")
         # print(dob)
-        if User.objects.filter(email=email).exists():
-            raise APIException400({
-                'success': "False",
-                'message': 'This email is already registered',
-            })
         if User.objects.filter(username=mobile_number).exists():
             raise APIException400({
                 'success': "False",
