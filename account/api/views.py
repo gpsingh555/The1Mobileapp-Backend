@@ -97,7 +97,7 @@ class signup(APIView):
         serializer = signupSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            user = User.objects.get(email=request.data['email'].lower())
+            user = User.objects.get(username=request.data['mobile_number'])
             profileO = Userprofile.objects.get(user=user)
             data = {
                 'user_id':user.id,
