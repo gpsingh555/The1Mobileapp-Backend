@@ -75,7 +75,7 @@ class login_view(APIView):
         email = request.data.get("email")
         password = request.data.get("password")
         if User.objects.filter(email=email).exists():
-            u = User.objects.get(email=email).username
+            u = User.objects.get(username=request.data['mobile_number'])
             user = authenticate(username=u, password=password)
             if user is not None:
                 if user.is_staff == True:
