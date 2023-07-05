@@ -75,7 +75,11 @@ class login_view(APIView):
         email = request.data.get("email")
         password = request.data.get("password")
         if User.objects.filter(email=email).exists():
+<<<<<<< HEAD
             u = User.objects.get.superuser or IsAdminUser (email=email)
+=======
+            u = User.objects.get(email=email)
+>>>>>>> 3b86be75c81deb46ab9dff58592867ecfe88114f
             user = authenticate(username=u, password=password)
             if user is not None:
                 if user.is_staff == True:
